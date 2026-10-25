@@ -4,13 +4,31 @@
 #include <vector>
 
 __global__ void AddKernel(const float *a, const float *b,
-                          float *c, int n) {
+                          float *c, int n)
+{
   int i = blockIdx.x * blockDim.x + threadIdx.x;
+
   if (i < n)
-    c[i] = a[i] + b[i];
+  {
+    float x0 = a[i];
+    float x1 = b[i];
+    float x2 = a[i] + 1.0f;
+    float x3 = b[i] + 1.0f;
+
+    for (int j = 0; j < 512; ++j)
+    {
+      x0 = __fmaf_rn(x0, 0.9999f, 0.0001f);
+      x1 = __fmaf_rn(x1, 0.9998f, 0.0002f);
+      x2 = __fmaf_rn(x2, 0.9997f, 0.0003f);
+      x3 = __fmaf_rn(x3, 0.9996f, 0.0004f);
+    }
+
+    c[i] = (x0 + x1) + (x2 + x3);
+  }
 }
 
-int RunExample() {
+int RunExample()
+{
   constexpr int n = 1 << 20;
   constexpr int threads = 256;
   constexpr int blocks = (n + threads - 1) / threads;
