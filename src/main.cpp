@@ -1,3 +1,3 @@
-#include "VectorAdd.h"
+#include "Lesson.h"
 
-int main() { return RunVectorAdd(); }
+int main() { return RunExample(); }

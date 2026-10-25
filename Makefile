@@ -2,7 +2,7 @@
 
 .DEFAULT_GOAL := build
 
-BUILD_TYPE ?= Debug
+BUILD_TYPE ?= Release
 BUILD_DIR  ?= build
 BIN_DIR    ?= bin
 JOBS       ?= 4
