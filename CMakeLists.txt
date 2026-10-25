@@ -55,6 +55,42 @@ target_compile_options(main PRIVATE
     "$<$<AND:$<COMPILE_LANGUAGE:CUDA>,$<CONFIG:Release>>:-O3>"
 )
 
+# Extract GPU SASS from the compiled executable.
+find_program(CUOBJDUMP_EXECUTABLE
+    NAMES cuobjdump
+    HINTS "${CUDAToolkit_BIN_DIR}"
+)
+
+set(SASS_DIR "${CMAKE_BINARY_DIR}/sass")
+set(SASS_FILE "${SASS_DIR}/main.sass")
+set(SASS_SCRIPT "${CMAKE_BINARY_DIR}/dump_sass-$<CONFIG>.cmake")
+
+file(GENERATE
+    OUTPUT "${SASS_SCRIPT}"
+    CONTENT "
+if(NOT EXISTS \"${CUOBJDUMP_EXECUTABLE}\")
+    message(FATAL_ERROR \"cuobjdump was not found. Install CUDA binary utilities and reconfigure.\")
+endif()
+
+file(MAKE_DIRECTORY \"${SASS_DIR}\")
+
+execute_process(
+    COMMAND \"${CUOBJDUMP_EXECUTABLE}\"
+        --dump-sass \"$<TARGET_FILE:main>\"
+    OUTPUT_FILE \"${SASS_FILE}\"
+    COMMAND_ERROR_IS_FATAL ANY
+)
+
+message(STATUS \"SASS file: ${SASS_FILE}\")
+"
+)
+
+add_custom_target(sass
+    COMMAND "${CMAKE_COMMAND}" -P "${SASS_SCRIPT}"
+    DEPENDS main
+    VERBATIM
+)
+
 message(STATUS "")
 message(STATUS "C++ / CUDA Configuration")
 message(STATUS "CMake            : ${CMAKE_VERSION}")
