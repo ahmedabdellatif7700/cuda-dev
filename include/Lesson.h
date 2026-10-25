@@ -1,3 +1,4 @@
 #pragma once
+#include <cstddef>
 
-int RunExample();
+void VectorAdd(const float* a, const float* b, float* c, std::size_t n);

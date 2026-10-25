@@ -1,63 +1,30 @@
 #include "Lesson.h"
-#include <cuda_runtime.h>
-#include <iostream>
-#include <vector>
+#include "CudaSupport.h"
 
-__global__ void AddKernel(const float *a, const float *b,
-                          float *c, int n)
+
+namespace
 {
-  int i = blockIdx.x * blockDim.x + threadIdx.x;
+constexpr int threads = 256;
 
-  if (i < n)
-  {
-    float x0 = a[i];
-    float x1 = b[i];
-    float x2 = a[i] + 1.0f;
-    float x3 = b[i] + 1.0f;
-
-    for (int j = 0; j < 512; ++j)
-    {
-      x0 = __fmaf_rn(x0, 0.9999f, 0.0001f);
-      x1 = __fmaf_rn(x1, 0.9998f, 0.0002f);
-      x2 = __fmaf_rn(x2, 0.9997f, 0.0003f);
-      x3 = __fmaf_rn(x3, 0.9996f, 0.0004f);
-    }
-
-    c[i] = (x0 + x1) + (x2 + x3);
-  }
+__global__ void AddKernel(const float* a, const float* b, float* c, std::size_t n)
+{
+    const std::size_t i = std::size_t(blockIdx.x) * blockDim.x + threadIdx.x;
+    if (i < n)
+        c[i] = a[i] + b[i];
+}
 }
 
-int RunExample()
+void VectorAdd(const float* a, const float* b, float* c, std::size_t n)
 {
-  constexpr int n = 1 << 20;
-  constexpr int threads = 256;
-  constexpr int blocks = (n + threads - 1) / threads;
-  constexpr size_t bytes = n * sizeof(float);
-
-  std::vector<float> a(n, 1.0f);
-  std::vector<float> b(n, 2.0f);
-  std::vector<float> c(n);
-
-  float *da = nullptr, *db = nullptr, *dc = nullptr;
-
-  cudaMalloc(&da, bytes);
-  cudaMalloc(&db, bytes);
-  cudaMalloc(&dc, bytes);
-
-  cudaMemcpy(da, a.data(), bytes, cudaMemcpyHostToDevice);
-  cudaMemcpy(db, b.data(), bytes, cudaMemcpyHostToDevice);
-
-  AddKernel<<<blocks, threads>>>(da, db, dc, n);
-  cudaDeviceSynchronize();
-
-  cudaMemcpy(c.data(), dc, bytes, cudaMemcpyDeviceToHost);
-
-  std::cout << "Blocks: " << blocks << '\n';
-  std::cout << "Threads per block: " << threads << '\n';
-  std::cout << "Result: " << c[0] << '\n';
-
-  cudaFree(da);
-  cudaFree(db);
-  cudaFree(dc);
-  return 0;
+    CheckInputs(a, b, c, n);
+    if (n == 0) return;
+    const std::size_t bytes = n * sizeof(float);
+    DeviceBuffer da(n), db(n), dc(n);
+    CheckCuda(cudaMemcpy(da.data(), a, bytes, cudaMemcpyHostToDevice), "Copy A");
+    CheckCuda(cudaMemcpy(db.data(), b, bytes, cudaMemcpyHostToDevice), "Copy B");
+    const unsigned blocks = unsigned((n + threads - 1) / threads);
+    AddKernel<<<blocks, threads>>>(da.data(), db.data(), dc.data(), n);
+    CheckCuda(cudaGetLastError(), "Launch AddKernel");
+    CheckCuda(cudaDeviceSynchronize(), "Execute AddKernel");
+    CheckCuda(cudaMemcpy(c, dc.data(), bytes, cudaMemcpyDeviceToHost), "Copy result");
 }
