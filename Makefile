@@ -12,7 +12,7 @@ GPU_CUDA_ARCHITECTURES ?= 87
 
 BINARY := $(BIN_DIR)/main
 
-.PHONY: clean configure build run debug cuda-debug sass
+.PHONY: clean configure build run debug cuda-debug asm
 
 clean:
 	@echo "Cleaning C++ and CUDA build artifacts..."
@@ -46,7 +46,7 @@ cuda-debug:
 	@$(MAKE) build BUILD_TYPE=Debug
 	@cuda-gdb --args "$(abspath $(BINARY))" $(ARGS)
 
-sass: configure
+asm: configure
 	@echo
-	@echo "Extracting GPU SASS..."
-	@cmake --build "$(BUILD_DIR)" --target sass --parallel "$(JOBS)"
+	@echo "Extracting GPU PTX and SASS..."
+	@cmake --build "$(BUILD_DIR)" --target asm --parallel "$(JOBS)"

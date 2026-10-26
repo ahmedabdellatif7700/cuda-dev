@@ -1,6 +1,7 @@
+
 cmake_minimum_required(VERSION 3.25)
 
-set(GPU_CUDA_ARCHITECTURES "87" CACHE STRING "CUDA GPU architectures")
+set(GPU_CUDA_ARCHITECTURES "87" CACHE STRING "CUDA GPU architecture")
 set(CMAKE_CUDA_ARCHITECTURES "${GPU_CUDA_ARCHITECTURES}")
 
 project(cpp LANGUAGES CXX CUDA)
@@ -17,7 +18,6 @@ set(CMAKE_CUDA_EXTENSIONS OFF)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
     "${CMAKE_CURRENT_SOURCE_DIR}/bin"
-    CACHE PATH "Executable output directory"
 )
 
 find_package(CUDAToolkit REQUIRED)
@@ -39,7 +39,6 @@ target_include_directories(main PRIVATE
 # )
 
 set_target_properties(main PROPERTIES
-    CUDA_ARCHITECTURES "${GPU_CUDA_ARCHITECTURES}"
     CUDA_SEPARABLE_COMPILATION ON
     CUDA_RESOLVE_DEVICE_SYMBOLS ON
 )
@@ -55,24 +54,72 @@ target_compile_options(main PRIVATE
     "$<$<AND:$<COMPILE_LANGUAGE:CUDA>,$<CONFIG:Release>>:-O3>"
 )
 
-# Extract GPU SASS from the compiled executable.
+# Generate PTX for each CUDA source file.
+set(ASM_DIR "${CMAKE_BINARY_DIR}/assembly")
+set(PTX_OUTPUTS)
+
+# Extract the numeric architecture for standalone nvcc compilation.
+list(GET GPU_CUDA_ARCHITECTURES 0 CUDA_ARCH)
+string(REGEX MATCH "^[0-9]+" CUDA_ARCH "${CUDA_ARCH}")
+
+if(NOT CUDA_ARCH)
+    message(FATAL_ERROR "Invalid CUDA GPU architecture")
+endif()
+
+foreach(SOURCE IN LISTS SOURCES)
+    if(NOT SOURCE MATCHES "\\.cu$")
+        continue()
+    endif()
+
+    file(RELATIVE_PATH NAME
+        "${CMAKE_CURRENT_SOURCE_DIR}/src"
+        "${SOURCE}"
+    )
+
+    string(REGEX REPLACE "\\.cu$" ".ptx" NAME "${NAME}")
+
+    set(PTX_FILE "${ASM_DIR}/${NAME}")
+    get_filename_component(PTX_DIR "${PTX_FILE}" DIRECTORY)
+
+    add_custom_command(
+        OUTPUT "${PTX_FILE}"
+
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${PTX_DIR}"
+
+        COMMAND "${CMAKE_CUDA_COMPILER}"
+            --ptx
+            -std=c++20
+            -arch=sm_${CUDA_ARCH}
+            "-I${CMAKE_CURRENT_SOURCE_DIR}/include"
+            "$<$<CONFIG:Debug>:-g>"
+            "$<$<CONFIG:Debug>:-G>"
+            "$<$<CONFIG:Debug>:-O0>"
+            "$<$<CONFIG:Release>:-O3>"
+            "${SOURCE}"
+            -o "${PTX_FILE}"
+
+        DEPENDS "${SOURCE}"
+        COMMAND_EXPAND_LISTS
+        VERBATIM
+    )
+
+    list(APPEND PTX_OUTPUTS "${PTX_FILE}")
+endforeach()
+
+# Extract SASS from the final linked executable.
 find_program(CUOBJDUMP_EXECUTABLE
     NAMES cuobjdump
     HINTS "${CUDAToolkit_BIN_DIR}"
+    REQUIRED
 )
 
-set(SASS_DIR "${CMAKE_BINARY_DIR}/sass")
-set(SASS_FILE "${SASS_DIR}/main.sass")
+set(SASS_FILE "${ASM_DIR}/main.sass")
 set(SASS_SCRIPT "${CMAKE_BINARY_DIR}/dump_sass-$<CONFIG>.cmake")
 
 file(GENERATE
     OUTPUT "${SASS_SCRIPT}"
     CONTENT "
-if(NOT EXISTS \"${CUOBJDUMP_EXECUTABLE}\")
-    message(FATAL_ERROR \"cuobjdump was not found. Install CUDA binary utilities and reconfigure.\")
-endif()
-
-file(MAKE_DIRECTORY \"${SASS_DIR}\")
+file(MAKE_DIRECTORY \"${ASM_DIR}\")
 
 execute_process(
     COMMAND \"${CUOBJDUMP_EXECUTABLE}\"
@@ -80,17 +127,16 @@ execute_process(
     OUTPUT_FILE \"${SASS_FILE}\"
     COMMAND_ERROR_IS_FATAL ANY
 )
-
-message(STATUS \"SASS file: ${SASS_FILE}\")
 "
 )
 
-add_custom_target(sass
+add_custom_target(asm
     COMMAND "${CMAKE_COMMAND}" -P "${SASS_SCRIPT}"
-    DEPENDS main
+    DEPENDS main ${PTX_OUTPUTS}
     VERBATIM
 )
 
+# Configuration summary.
 message(STATUS "")
 message(STATUS "C++ / CUDA Configuration")
 message(STATUS "CMake            : ${CMAKE_VERSION}")
@@ -105,4 +151,11 @@ message(STATUS "CUDA toolkit     : ${CUDAToolkit_VERSION}")
 message(STATUS "CUDA architecture: ${GPU_CUDA_ARCHITECTURES}")
 message(STATUS "Target           : main")
 message(STATUS "Executable       : ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/main")
+
+message(STATUS "")
+message(STATUS "GPU Assembly Artifacts")
+foreach(PTX_FILE IN LISTS PTX_OUTPUTS)
+    message(STATUS "PTX file         : ${PTX_FILE}")
+endforeach()
+message(STATUS "SASS file        : ${SASS_FILE}")
 message(STATUS "")
