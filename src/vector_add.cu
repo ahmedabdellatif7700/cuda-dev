@@ -24,6 +24,8 @@ void LaunchVectorAdd(const float* a, const float* b, float* c,
 }
 
 // Host-side setup stays outside the kernels so experiments only change GPU work.
+namespace
+{
 struct Events {
     cudaEvent_t start{}, stop{};
     Events() {
@@ -32,7 +34,11 @@ struct Events {
         catch (...) { cudaEventDestroy(start); throw; }
     }
     ~Events() { cudaEventDestroy(start); cudaEventDestroy(stop); }
+    Events(const Events&) = delete;
+    Events& operator=(const Events&) = delete;
 };
+
+} // namespace
 
 void Run(std::size_t n, int threads, int iterations, bool vectorized)
 {
@@ -50,7 +56,7 @@ void Run(std::size_t n, int threads, int iterations, bool vectorized)
         LaunchVectorAdd(da.data(), db.data(), dc.data(), n, threads, vectorized);
         CheckCuda(cudaGetLastError(), "Launch vector add");
     };
-    launch(); // One warmup; profiler commands skip this launch.
+    launch(); // One warmup before timed execution.
     CheckCuda(cudaDeviceSynchronize(), "Warmup");
     Events events;
     CheckCuda(cudaEventRecord(events.start), "Record start");
