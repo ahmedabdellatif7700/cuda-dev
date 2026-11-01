@@ -2,7 +2,7 @@
 
 **Status: proposed; awaiting roadmap approval. No source or build changes are authorized by this document.**
 
-Reference: John Cheng, Max Grossman, and Ty McKercher, *Professional CUDA C Programming* (2014), supplied PDF in `cuda-book/` (527 PDF pages). All reading locations below use **printed book pages**; printed page 1 is PDF page 29 (one-based). Target: **Jetson Orin Nano 8GB, compute capability 8.7**. Prepared 2026-11-01.
+Reference: John Cheng, Max Grossman, and Ty McKercher, *Professional CUDA C Programming* (2014), supplied PDF in `books/` (527 PDF pages). All reading locations below use **printed book pages**; printed page 1 is PDF page 29 (one-based). Target: **Jetson Orin Nano 8GB, compute capability 8.7**. Prepared 2026-11-01.
 
 ## Scope and evidence
 
@@ -20,10 +20,25 @@ The PDF is reference material. Its commands, installation instructions, download
 | `src/vector_add.cu` | Checked host runner, deterministic data, device buffers, CUDA-event timing, full CPU comparison. Current timing is one launch with no warmup. |
 | `src/vector_add_vectorized.cu` | float4 kernel and scalar tail; existing alignment and tail behavior provide useful later memory lessons. |
 | `include/CudaSupport.h` | Checked runtime calls and float-specific noncopyable allocation owner; future types need appropriate ownership rather than assuming this is generic. |
-| `docs/vector-add-profiling.md` | Prior screenshot interpretations; useful evidence, but not a substitute for reproducible raw reports or proof that a book subsection is complete. |
+| `docs/professional-cuda/vector-add-profiling.md` | Prior screenshot interpretations; useful evidence, but not a substitute for reproducible raw reports or proof that a book subsection is complete. |
 | Execution host | aarch64, `nvcc` discoverable under `/usr/local/cuda-13.2/bin`, GPU device nodes present. Toolkit/runtime/device compatibility and actual properties remain to be recorded by the first approved lesson. No build or benchmark was run for this documentation task. |
 
 Pre-existing worktree changes and unrelated files are left untouched. This task changes only this roadmap. No compiler flags, dependencies, tools, or power settings have been changed.
+
+## Branch, documentation, and lesson commits
+
+Use branch `professional-cuda` for this book. Keep its Markdown
+files in `docs/professional-cuda/`, including the roadmap,
+lesson notes, and profiling discussions. Keep source files flat under `src/`
+with functional names and each kernel in its own `.cu` file. `main.cpp`
+directly drives the current experiment; it is not a lesson selector.
+These layout choices supersede the proposed chapter module families below.
+
+Review and approve each lesson before building/running it. Commit lessons
+individually in chapter/subsection order, with messages such as
+`ch01: compare sequential and parallel vector addition`. Each lesson commit
+includes its implementation, validation notes, and available profiling discussion;
+record pending profiling explicitly. Do not bundle later lessons into that commit.
 
 ## Working agreement for every subsection
 
@@ -31,7 +46,7 @@ We follow book order and advance **one smallest subsection at a time**. If a sec
 
 1. **Theory:** explain the subsection, derive indexing or resource/traffic expectations, and connect it to Orin architecture. State a falsifiable prediction.
 2. **Experiment design:** define one independent variable, a baseline/control, input sizes, boundary rules, and correctness criteria. Name the runner/kernel and relevant metric groups from the legend below.
-3. **Implementation, only after roadmap approval:** keep host selection in `src/main.cpp`; use dedicated files such as `src/ch03/warp_divergence.cu` and narrow declarations in `include/` where useful. Maintain modern C++ ownership and checked CUDA/library calls. Keep baselines available and experiments bounded for an 8GB system shared with the OS and CPU.
+3. **Implementation, only after roadmap approval:** keep host orchestration in `src/main.cpp`; use dedicated functional files such as `src/warp_divergence.cu` and narrow declarations in `include/` where useful. Maintain modern C++ ownership and checked CUDA/library calls. Keep baselines available and experiments bounded for an 8GB system shared with the OS and CPU.
 4. **Build and validate:** run the repository command, sequentially without `-j`:
 
    ```bash
@@ -582,13 +597,32 @@ The appendix has reading groups for **Chapter 1 through Chapter 10**. Review eac
 ## Record template for each smallest subsection
 
 ```markdown
-### <roadmap ID> — <book subsection>, printed p. <page>
+# Lesson <sequence> — <book topic>
+
+## Book location
+
+| Field | Reference |
+|---|---|
+| Book | Professional CUDA C Programming (2014) |
+| Chapter | <number — exact chapter title; starting printed page> |
+| Section | <exact enclosing section title; starting printed page> |
+| Subsection | <exact subsection title, or N/A for a section-level lesson> |
+| Reading | <printed page range and stopping heading; prerequisite introductions> |
+| Roadmap ID | <navigation ID and relative link to cuda-learning-path.md> |
+| Experiment | <functional experiment name and actual kernel names> |
+| Status | <draft / approved / validated / awaiting user profile / completed> |
+
+Roadmap IDs are navigation labels, not book-assigned section numbers.
+Use these headings consistently: Theory and GPU architecture; Implementation;
+Experiment and correctness; Measurements; Expected GPU behavior;
+Build and validation; User profiling and discussion; Completion gate.
+
 Status: theory pending | implementation pending | validation pending | user profile pending
 Theory and architecture connection:
 Question and predicted GPU behavior:
 Baseline/control and one independent variable:
 Inputs, launch, memory budget, boundaries, reference, and tolerance:
-main.cpp selection / dedicated .cu runner / kernel names:
+main.cpp orchestration / dedicated .cu files / kernel names:
 Build and run: make clean build run
 Validation and unprofiled repeated timings:
 Target, software, power/clock/temperature, and revision context:

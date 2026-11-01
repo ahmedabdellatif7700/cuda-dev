@@ -1,21 +1,30 @@
-#include <cstddef>
+#include "VectorAdd.h"
+
+#include <array>
 #include <exception>
 #include <iostream>
-
-void RunScalarExample(std::size_t count, int threads);
-void RunVectorizedExample(std::size_t count, int threads);
+#include <vector>
 
 int main()
 {
-    // Change one setting at a time, then compare the two kernels.
-    // The extra three elements exercise the vectorized kernel's tail handling.
-    constexpr std::size_t element_count = 4 * 1024 * 1024 + 3;
-    constexpr int threads_per_block = 256;
+    constexpr int threads = 256;
+    constexpr std::array<std::size_t, 9> sizes{0, 1, 16, 31, 33, 257, 1024, 65536, 4194307};
 
     try
     {
-        RunScalarExample(element_count, threads_per_block);
-        RunVectorizedExample(element_count, threads_per_block);
+        for (const auto n : sizes)
+        {
+            std::vector<float> a(n), b(n), result(n);
+            for (std::size_t i = 0; i < n; ++i)
+            {
+                a[i] = static_cast<float>(i % 17) * 0.25f;
+                b[i] = static_cast<float>(i % 11) * -0.5f;
+            }
+
+            VectorAdd(a, b, result, threads);
+
+            std::cout << "Completed n=" << n << " threads=" << threads << '\n';
+        }
     }
     catch (const std::exception& error)
     {
