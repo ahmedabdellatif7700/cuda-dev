@@ -1,49 +1,24 @@
 #include <cstddef>
-#include <stdexcept>
+#include <exception>
 #include <iostream>
-#include <string>
 
-void Run(std::size_t n, int threads, int iterations, bool vectorized);
+void RunVectorAddExamples(std::size_t count, int threads, int repetitions);
 
-namespace
+int main()
 {
-unsigned long long Number(const char* text)
-{
-    std::string value(text);
-    if (value.empty() || value.find_first_not_of("0123456789") != std::string::npos)
-        throw std::invalid_argument("Expected an unsigned integer: " + value);
-    return std::stoull(value);
-}
+    // Change one setting at a time, then compare the two kernels.
+    // The extra three elements exercise the vectorized kernel's tail handling.
+    constexpr std::size_t element_count = 4 * 1024 * 1024 + 3;
+    constexpr int threads_per_block = 256;
+    constexpr int repetitions = 100;
 
-} // namespace
-
-int main(int argc, char** argv)
-{
-    try {
-        const std::string kernel = argc > 1 ? argv[1] : "both";
-        if (kernel == "--help") {
-            std::cout << "Usage: main [both|scalar|vectorized|check] [elements=4194304] [threads=256] [iterations=100]\n";
-            return 0;
-        }
-        if (argc > 5 || (kernel != "both" && kernel != "scalar" && kernel != "vectorized" && kernel != "check"))
-            throw std::invalid_argument("Use --help for usage");
-        const auto n = argc > 2 ? Number(argv[2]) : 4194304ULL;
-        const auto threads = argc > 3 ? Number(argv[3]) : 256ULL;
-        const auto iterations = argc > 4 ? Number(argv[4]) : 100ULL;
-        if (n > (1u << 24) || threads == 0 || threads > 1024 || iterations == 0 || iterations > 100000)
-            throw std::invalid_argument("Limits: elements <= 2^24, threads 1..1024, iterations 1..100000");
-        if (kernel == "check") {
-            for (bool v : {false, true})
-                for (std::size_t size : {0u, 1u, 2u, 3u, 4u, 5u, 255u, 256u, 257u, 1023u, 1025u, 65537u})
-                    Run(size, int(threads), 1, v);
-        } else {
-            if (kernel == "both" || kernel == "scalar")
-                Run(std::size_t(n), int(threads), int(iterations), false);
-            if (kernel == "both" || kernel == "vectorized")
-                Run(std::size_t(n), int(threads), int(iterations), true);
-        }
-    } catch (const std::exception& error) {
-        std::cerr << error.what() << '\n';
+    try
+    {
+        RunVectorAddExamples(element_count, threads_per_block, repetitions);
+    }
+    catch (const std::exception& error)
+    {
+        std::cerr << "Error: " << error.what() << '\n';
         return 1;
     }
 }

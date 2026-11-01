@@ -13,6 +13,8 @@ __global__ void VectorAddScalar(const float* a, const float* b, float* c, std::s
 
 void LaunchVectorAddVectorized(const float*, const float*, float*, std::size_t, int);
 
+namespace
+{
 void LaunchVectorAdd(const float* a, const float* b, float* c,
                      std::size_t n, int threads, bool vectorized)
 {
@@ -23,9 +25,7 @@ void LaunchVectorAdd(const float* a, const float* b, float* c,
         VectorAddScalar<<<unsigned((n + threads - 1) / threads), threads>>>(a, b, c, n);
 }
 
-// Host-side setup stays outside the kernels so experiments only change GPU work.
-namespace
-{
+// CUDA events measure elapsed GPU time. Destruction releases their resources.
 struct Events {
     cudaEvent_t start{}, stop{};
     Events() {
@@ -38,22 +38,23 @@ struct Events {
     Events& operator=(const Events&) = delete;
 };
 
-} // namespace
-
 void Run(std::size_t n, int threads, int iterations, bool vectorized)
 {
+    // 1. Prepare input on the CPU. std::vector owns and releases host memory.
     std::vector<float> a(n), b(n), c(n);
     for (std::size_t i = 0; i < n; ++i) {
-        a[i] = float(int(i % 17) - 8) * 0.25f;
-        b[i] = float(int(i % 11) - 5) * 0.5f;
+        a[i] = static_cast<float>(i % 17) * 0.25f;
+        b[i] = static_cast<float>(i % 11) * -0.5f;
     }
     if (n == 0) { std::cout << "PASS: empty input (no launch)\n"; return; }
-    DeviceBuffer da(n), db(n), dc(n);
+    // 2. Allocate GPU memory and copy the input to it.
+    DeviceBuffer device_a(n), device_b(n), device_c(n);
     const auto bytes = n * sizeof(float);
-    CheckCuda(cudaMemcpy(da.data(), a.data(), bytes, cudaMemcpyHostToDevice), "Copy A");
-    CheckCuda(cudaMemcpy(db.data(), b.data(), bytes, cudaMemcpyHostToDevice), "Copy B");
-    auto launch = [&] {
-        LaunchVectorAdd(da.data(), db.data(), dc.data(), n, threads, vectorized);
+    CheckCuda(cudaMemcpy(device_a.data(), a.data(), bytes, cudaMemcpyHostToDevice), "Copy A");
+    CheckCuda(cudaMemcpy(device_b.data(), b.data(), bytes, cudaMemcpyHostToDevice), "Copy B");
+    // 3. Warm up, then time repeated launches without including transfers.
+    const auto launch = [&] {
+        LaunchVectorAdd(device_a.data(), device_b.data(), device_c.data(), n, threads, vectorized);
         CheckCuda(cudaGetLastError(), "Launch vector add");
     };
     launch(); // One warmup before timed execution.
@@ -65,13 +66,26 @@ void Run(std::size_t n, int threads, int iterations, bool vectorized)
     CheckCuda(cudaEventSynchronize(events.stop), "Execute kernels");
     float ms = 0;
     CheckCuda(cudaEventElapsedTime(&ms, events.start, events.stop), "Elapsed time");
-    CheckCuda(cudaMemcpy(c.data(), dc.data(), bytes, cudaMemcpyDeviceToHost), "Copy result");
+    // 4. Copy back and check every result against the CPU calculation.
+    CheckCuda(cudaMemcpy(c.data(), device_c.data(), bytes, cudaMemcpyDeviceToHost), "Copy result");
     for (std::size_t i = 0; i < n; ++i)
         if (!std::isfinite(c[i]) || std::fabs(c[i] - (a[i] + b[i])) > 1e-5f)
             throw std::runtime_error("Mismatch at index " + std::to_string(i));
-    const float average = ms / iterations;
+    const float average = ms / static_cast<float>(iterations);
     std::cout << "PASS: " << (vectorized ? "vectorized" : "scalar") << " n=" << n
               << " threads=" << threads << " average=" << average << " ms"
-              << " effective=" << (3.0 * bytes / (average * 1e6)) << " GB/s\n";
+              << '\n';
 }
 
+} // namespace
+
+void RunVectorAddExamples(std::size_t count, int threads, int repetitions)
+{
+    if (count > (1u << 24))
+        throw std::invalid_argument("Use at most 2^24 elements for this example");
+    if (threads < 1 || threads > 1024 || repetitions < 1)
+        throw std::invalid_argument("Use 1..1024 threads and at least one repetition");
+
+    Run(count, threads, repetitions, false); // One float per thread.
+    Run(count, threads, repetitions, true);  // Four floats per thread.
+}
