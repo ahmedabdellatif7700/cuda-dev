@@ -38,8 +38,11 @@ struct Events {
     Events& operator=(const Events&) = delete;
 };
 
-void Run(std::size_t n, int threads, int iterations, bool vectorized)
+void Run(std::size_t n, int threads, bool vectorized)
 {
+    if (n > (1u << 24) || threads < 1 || threads > 1024)
+        throw std::invalid_argument("Use at most 2^24 elements and 1..1024 threads");
+
     // 1. Prepare input on the CPU. std::vector owns and releases host memory.
     std::vector<float> a(n), b(n), c(n);
     for (std::size_t i = 0; i < n; ++i) {
@@ -52,16 +55,14 @@ void Run(std::size_t n, int threads, int iterations, bool vectorized)
     const auto bytes = n * sizeof(float);
     CheckCuda(cudaMemcpy(device_a.data(), a.data(), bytes, cudaMemcpyHostToDevice), "Copy A");
     CheckCuda(cudaMemcpy(device_b.data(), b.data(), bytes, cudaMemcpyHostToDevice), "Copy B");
-    // 3. Warm up, then time repeated launches without including transfers.
+    // 3. Time one kernel launch, excluding transfers.
     const auto launch = [&] {
         LaunchVectorAdd(device_a.data(), device_b.data(), device_c.data(), n, threads, vectorized);
         CheckCuda(cudaGetLastError(), "Launch vector add");
     };
-    launch(); // One warmup before timed execution.
-    CheckCuda(cudaDeviceSynchronize(), "Warmup");
     Events events;
     CheckCuda(cudaEventRecord(events.start), "Record start");
-    for (int i = 0; i < iterations; ++i) launch();
+    launch();
     CheckCuda(cudaEventRecord(events.stop), "Record stop");
     CheckCuda(cudaEventSynchronize(events.stop), "Execute kernels");
     float ms = 0;
@@ -71,21 +72,19 @@ void Run(std::size_t n, int threads, int iterations, bool vectorized)
     for (std::size_t i = 0; i < n; ++i)
         if (!std::isfinite(c[i]) || std::fabs(c[i] - (a[i] + b[i])) > 1e-5f)
             throw std::runtime_error("Mismatch at index " + std::to_string(i));
-    const float average = ms / static_cast<float>(iterations);
     std::cout << "PASS: " << (vectorized ? "vectorized" : "scalar") << " n=" << n
-              << " threads=" << threads << " average=" << average << " ms"
+              << " threads=" << threads << " elapsed=" << ms << " ms"
               << '\n';
 }
 
 } // namespace
 
-void RunVectorAddExamples(std::size_t count, int threads, int repetitions)
+void RunScalarExample(std::size_t count, int threads)
 {
-    if (count > (1u << 24))
-        throw std::invalid_argument("Use at most 2^24 elements for this example");
-    if (threads < 1 || threads > 1024 || repetitions < 1)
-        throw std::invalid_argument("Use 1..1024 threads and at least one repetition");
+    Run(count, threads, false);
+}
 
-    Run(count, threads, repetitions, false); // One float per thread.
-    Run(count, threads, repetitions, true);  // Four floats per thread.
+void RunVectorizedExample(std::size_t count, int threads)
+{
+    Run(count, threads, true);
 }

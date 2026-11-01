@@ -2,7 +2,8 @@
 #include <exception>
 #include <iostream>
 
-void RunVectorAddExamples(std::size_t count, int threads, int repetitions);
+void RunScalarExample(std::size_t count, int threads);
+void RunVectorizedExample(std::size_t count, int threads);
 
 int main()
 {
@@ -10,11 +11,11 @@ int main()
     // The extra three elements exercise the vectorized kernel's tail handling.
     constexpr std::size_t element_count = 4 * 1024 * 1024 + 3;
     constexpr int threads_per_block = 256;
-    constexpr int repetitions = 100;
 
     try
     {
-        RunVectorAddExamples(element_count, threads_per_block, repetitions);
+        RunScalarExample(element_count, threads_per_block);
+        RunVectorizedExample(element_count, threads_per_block);
     }
     catch (const std::exception& error)
     {

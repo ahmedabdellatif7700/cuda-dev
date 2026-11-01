@@ -1,5 +1,6 @@
 #include <cuda_runtime.h>
 #include <cstddef>
+#include <algorithm>
 
 // Compare with the scalar kernel: each thread handles four adjacent floats.
 // cudaMalloc provides alignment for float4; don't pass offset device pointers.
@@ -23,6 +24,7 @@ __global__ void VectorAddFloat4(const float* a, const float* b, float* c, std::s
 void LaunchVectorAddVectorized(const float* a, const float* b, float* c,
                               std::size_t n, int threads)
 {
-    const std::size_t work = (n + 3) / 4;
+    // Enough threads for both float4 groups and the 0..3 scalar tail elements.
+    const auto work = std::max(n / 4, n % 4);
     VectorAddFloat4<<<unsigned((work + threads - 1) / threads), threads>>>(a, b, c, n);
 }
