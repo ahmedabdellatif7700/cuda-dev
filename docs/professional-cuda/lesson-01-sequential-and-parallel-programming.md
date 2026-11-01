@@ -11,7 +11,7 @@
 | Reading | Printed p. 3; stop at Parallelism on p. 4. Read the introductions on pp. 1–2 first. |
 | Roadmap ID | 1.1.1 — see [learning roadmap](cuda-learning-path.md) |
 | Experiment | Scalar CUDA vector addition |
-| Status | Build/run completed; user profiling and discussion pending |
+| Status | Build/run completed; small-grid screenshots discussed; size comparison pending |
 
 The roadmap ID is our navigation label, not a section number printed in the book.
 
@@ -86,4 +86,9 @@ captures and collection settings so we can interpret the actual behavior togethe
 - Run the input sizes and compare your profiling observations with the prediction.
 - Discuss your kernel captures before advancing to **1.1.2 — Parallelism (p. 4)**.
 
-Results and discussion: pending.
+Results and discussion: initial small-grid capture recorded below; larger-grid comparison pending.
+
+## Profiling handout
+
+See the [Nsight Compute profiling handout](../ncu-profiling/lesson-01-sequential-and-parallel-programming.md)
+for the observation checklist, screenshot interpretation, and proposed code changes.
