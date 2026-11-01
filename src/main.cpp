@@ -1,34 +1,38 @@
 #include "VectorAdd.h"
 
-#include <array>
 #include <exception>
 #include <iostream>
 #include <vector>
 
 int main()
 {
-    constexpr int threads = 256;
-    constexpr std::array<std::size_t, 9> sizes{0, 1, 16, 31, 33, 257, 1024, 65536, 4194307};
+    const int element_count = 65536;
+    const int threads_per_block = 256;
+    const int max_blocks = 64;
 
     try
     {
-        for (const auto n : sizes)
-        {
-            std::vector<float> a(n), b(n), result(n);
-            for (std::size_t i = 0; i < n; ++i)
-            {
-                a[i] = static_cast<float>(i % 17) * 0.25f;
-                b[i] = static_cast<float>(i % 11) * -0.5f;
-            }
+        std::vector<float> input_a(element_count, 1.0f);
+        std::vector<float> input_b(element_count, 2.0f);
+        std::vector<float> output(element_count);
 
-            VectorAdd(a, b, result, threads);
+        VectorAdd(input_a, input_b, output, threads_per_block);
 
-            std::cout << "Completed n=" << n << " threads=" << threads << '\n';
-        }
+        std::cout << "Scalar: ";
+        for (int i = 0; i < 8 && i < element_count; ++i)
+            std::cout << output[i] << ' ';
+        std::cout << '\n';
+
+        VectorAddCyclic(input_a, input_b, output, threads_per_block, max_blocks);
+
+        std::cout << "Cyclic: ";
+        for (int i = 0; i < 8 && i < element_count; ++i)
+            std::cout << output[i] << ' ';
+        std::cout << '\n';
     }
     catch (const std::exception& error)
     {
-        std::cerr << "Error: " << error.what() << '\n';
+        std::cerr << error.what() << '\n';
         return 1;
     }
 }
