@@ -14,17 +14,25 @@ int main()
 
     try
     {
+        // CPU: allocate host arrays and prepare the input values.
+        std::cout << "CPU: prepare inputs\n";
         std::vector<float> indices(element_count);
         std::vector<float> input_a(element_count);
         std::vector<float> input_b(element_count, 10.0f);
         std::vector<float> output(element_count);
 
+        // Prepare host inputs: A[index] = index and B[index] = 10.
         for (int index = 0; index < element_count; ++index)
             input_a[index] = static_cast<float>(index);
 
+        // The mapping kernel returns blockIdx.x * blockDim.x + threadIdx.x.
+        // Its PTX is generated in build/assembly/thread_mapping.ptx.
         ThreadMapping(indices, block_count, threads_per_block);
         VectorAdd(input_a, input_b, output, threads_per_block);
 
+        // Print returned data by logical block/thread ownership.
+        // Display order does not reveal GPU execution order or SM placement.
+        std::cout << "CPU: print returned results\n\n";
         for (int block = 0; block < block_count; ++block)
         {
             const int first_index = block * threads_per_block;

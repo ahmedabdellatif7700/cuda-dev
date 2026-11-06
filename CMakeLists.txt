@@ -103,6 +103,8 @@ foreach(SOURCE IN LISTS SOURCES)
     list(APPEND PTX_OUTPUTS "${PTX_FILE}")
 endforeach()
 
+add_custom_target(ptx DEPENDS ${PTX_OUTPUTS})
+
 # Extract SASS from the final linked executable.
 find_program(CUOBJDUMP_EXECUTABLE
     NAMES cuobjdump

@@ -42,6 +42,19 @@ record pending profiling explicitly. Do not bundle later lessons into that commi
 
 ## Working agreement for every subsection
 
+### CUDA source and PTX annotation convention
+
+For each lesson, generate PTX with `make ptx` and select only the instructions
+relevant to its concept. Put them inside the kernel implementation, beside the
+CUDA statement they explain, with a short explanation on the same comment line.
+Use the generated instruction spelling and operands; identify excerpts when
+setup or other instructions are omitted. Refresh annotations after relevant code
+or compiler changes. Keep main.cpp straightforward and free of kernel instruction
+walkthroughs. PTX uses virtual registers and is intermediate code; use SASS when
+actual machine instruction selection matters, and user-provided ncu-ui captures
+for measured behavior. Do not add timers or numerical result checks unless requested.
+
+
 We follow book order and advance **one smallest subsection at a time**. If a section has children, its row introduces the section; it is not permission to implement all children together. Deeper-body rows are read at their page position inside the enclosing section, before proceeding to the next contents subsection. Reuse an existing kernel when it already isolates the question; do not invent a new kernel for a conceptual review.
 
 1. **Theory:** explain the subsection, derive indexing or resource/traffic expectations, and connect it to Orin architecture. State a falsifiable prediction.

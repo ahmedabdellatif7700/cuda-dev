@@ -6,7 +6,14 @@ __global__ void VectorAddScalar(const float* input_a, const float* input_b, floa
 {
     const auto index = std::size_t(blockIdx.x) * blockDim.x + threadIdx.x;
     if (index < element_count)
+    {
+        // make ptx -> build/assembly/vector_add.ptx; address setup omitted.
+        // ld.global.f32 %f1, [%rd12];   // Load input_b[index].
+        // ld.global.f32 %f2, [%rd10];   // Load input_a[index].
+        // add.f32 %f3, %f2, %f1;       // Add the two floats.
+        // st.global.f32 [%rd14], %f3;  // Store output[index].
         output[index] = input_a[index] + input_b[index];
+    }
 }
 
 void LaunchVectorAddScalar(const float* input_a, const float* input_b, float* output,
