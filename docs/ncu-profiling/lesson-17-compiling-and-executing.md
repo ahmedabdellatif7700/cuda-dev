@@ -3,6 +3,15 @@
 Chapter 2 → Introducing the CUDA Programming Model → Compiling and Executing, printed pp. 40–42; roadmap 2.1.8.
 See [lesson notes](../professional-cuda/lesson-17-compiling-and-executing.md).
 
+## Core idea
+
+Host and device compilation/linking produce one executable while preserving distinct CPU and GPU execution paths.
+
+**Code or evidence:** [Makefile](../../Makefile). make clean build run builds and executes; make ptx emits intermediate GPU operations; make asm additionally extracts final device instructions.
+
+**Original lesson commit:** `ce6d1e1`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Monitor and interpret
 
 Kernel(s): **Current matrix kernels**.

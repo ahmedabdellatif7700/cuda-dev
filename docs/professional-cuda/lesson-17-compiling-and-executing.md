@@ -12,6 +12,15 @@
 | Roadmap ID | 2.1.8 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run record in chapter summary; user profiling pending where applicable |
 
+## Core idea
+
+Host and device compilation/linking produce one executable while preserving distinct CPU and GPU execution paths.
+
+**Code or evidence:** [Makefile](../../Makefile). make clean build run builds and executes; make ptx emits intermediate GPU operations; make asm additionally extracts final device instructions.
+
+**Original lesson commit:** `ce6d1e1`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Concept and code connection
 
 Use the preserved Make → CMake → Ninja build. C++ is compiled as C++23; .cu sources use CUDA C++20 and architecture 87. The linked program contains host code and device images. make ptx generates intermediate operations; make asm also extracts final SASS. Keep Release for performance observations. With multiple functions/files, headers declare interfaces and separate device compilation/linking is already enabled. If nvcc is absent from PATH, export /usr/local/cuda-13.2/bin for the shell; do not install another toolkit automatically.
