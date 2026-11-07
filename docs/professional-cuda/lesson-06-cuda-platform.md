@@ -12,6 +12,15 @@
 | Roadmap ID | 1.2.3 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run completed; user profiling/discussion pending where applicable |
 
+## Core idea
+
+CUDA is a complete programming platform; source language, runtime, driver, compiler, and tools serve different roles.
+
+**Code or evidence:** [CMakeLists.txt](../../CMakeLists.txt). The host compiler builds C++ orchestration, nvcc compiles CUDA, and cudart supports runtime calls. PTX is intermediate code, not a profiling result.
+
+**Original lesson commit:** `1e8f7c0`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Concept
 
 CUDA includes a programming model, runtime/driver APIs, compiler support, libraries,
