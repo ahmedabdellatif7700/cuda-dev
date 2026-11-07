@@ -12,6 +12,15 @@
 | Roadmap ID | 2.3.4 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run record in chapter summary; user profiling pending where applicable |
 
+## Core idea
+
+A 2D grid with 1D blocks can dedicate each grid row to one matrix row.
+
+**Code or evidence:** [matrix_add_rows.cu](../../src/matrix_add_rows.cu). With width 7, height 3, and 4 threads/block, grid (2,3) launches 24 threads; each row has one thread beyond its width.
+
+**Original lesson commit:** `d9c9df1`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Concept and code connection
 
 Map blockIdx.y directly to one matrix row and use 1D threads across columns. Grid = (ceil(width/threads),height). For width 7, height 3, threads 4: grid (2,3), 6 blocks and 24 launched threads. Each row has one extra thread. This preserves explicit rows while keeping blocks 1D. Compare with the 32 threads in the 2D-block variant and 24 in the flat variant; same work does not imply identical inactive-thread patterns.

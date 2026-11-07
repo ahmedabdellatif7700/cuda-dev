@@ -3,6 +3,15 @@
 Chapter 2 → Organizing Parallel Threads → Summing Matrices with a 2D Grid and 1D Blocks, printed pp. 58–59; roadmap 2.3.4.
 See [lesson notes](../professional-cuda/lesson-23-matrix-add-rows.md).
 
+## Core idea
+
+A 2D grid with 1D blocks can dedicate each grid row to one matrix row.
+
+**Code or evidence:** [matrix_add_rows.cu](../../src/matrix_add_rows.cu). With width 7, height 3, and 4 threads/block, grid (2,3) launches 24 threads; each row has one thread beyond its width.
+
+**Original lesson commit:** `d9c9df1`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Monitor and interpret
 
 Kernel(s): **AddMatrixRows**.
