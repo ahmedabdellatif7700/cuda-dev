@@ -12,6 +12,15 @@
 | Roadmap ID | 2.1.1 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run record in chapter summary; user profiling pending where applicable |
 
+## Core idea
+
+A CUDA program has a host lifecycle surrounding a device computation.
+
+**Code or evidence:** [vector_add.cpp](../../src/vector_add.cpp). Follow allocation → input copies → launch wrapper → output copy → allocation destruction. Only the __global__ body performs the GPU addition.
+
+**Original lesson commit:** `1779c4c`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Concept and code connection
 
 Read the chapter/programming-model introduction on pp. 23–25 first. CUDA exposes logical thread groups and memory spaces. Follow allocate → copy inputs → launch → copy output → release in the existing vector wrapper. A host function in a .cu file still runs on the CPU. The kernel is the __global__ function. Chapter 1 modules remain available; no duplicate kernel is needed.

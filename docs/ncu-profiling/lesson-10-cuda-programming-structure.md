@@ -3,6 +3,15 @@
 Chapter 2 → Introducing the CUDA Programming Model → CUDA Programming Structure, printed pp. 25–26; roadmap 2.1.1.
 See [lesson notes](../professional-cuda/lesson-10-cuda-programming-structure.md).
 
+## Core idea
+
+A CUDA program has a host lifecycle surrounding a device computation.
+
+**Code or evidence:** [vector_add.cpp](../../src/vector_add.cpp). Follow allocation → input copies → launch wrapper → output copy → allocation destruction. Only the __global__ body performs the GPU addition.
+
+**Original lesson commit:** `1779c4c`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Monitor and interpret
 
 Kernel(s): **VectorAddScalar**.
