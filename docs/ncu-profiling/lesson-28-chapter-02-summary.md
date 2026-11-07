@@ -3,6 +3,15 @@
 Chapter 2 → Summary → Chapter 2 Summary and Exercises, printed pp. 65; roadmap 2.5.
 See [lesson notes](../professional-cuda/lesson-28-chapter-02-summary.md).
 
+## Core idea
+
+The programming model connects ownership, geometry, memory, completion, and device constraints; equal results can come from different mappings.
+
+**Code or evidence:** [main.cpp](../../src/main.cpp). The final program runs flat, 2D, row-wise, pair-per-thread, and integer additions on matching small arrays. Performance rankings still require your captures.
+
+**Original lesson commit:** `cff1695`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Monitor and interpret
 
 Kernel(s): **All current matrix variants**.

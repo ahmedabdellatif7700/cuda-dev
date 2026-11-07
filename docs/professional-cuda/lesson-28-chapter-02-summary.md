@@ -12,6 +12,15 @@
 | Roadmap ID | 2.5 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run record in chapter summary; user profiling pending where applicable |
 
+## Core idea
+
+The programming model connects ownership, geometry, memory, completion, and device constraints; equal results can come from different mappings.
+
+**Code or evidence:** [main.cpp](../../src/main.cpp). The final program runs flat, 2D, row-wise, pair-per-thread, and integer additions on matching small arrays. Performance rankings still require your captures.
+
+**Original lesson commit:** `cff1695`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Concept and code connection
 
 The chapter covers program structure, memory, thread hierarchy, launches, kernel writing, verification/error distinctions, compilation, timing concepts, matrix mappings and device management. No topic is dropped; timing and automatic numerical checking remain conceptual/adapted under your preferences. Earlier modules and standalone exercises stay preserved. Chapter 3 has not started.
