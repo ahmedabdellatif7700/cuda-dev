@@ -23,4 +23,6 @@ void PrintDeviceInfo()
         std::cout << "Global bytes=" << properties.totalGlobalMem
                   << " shared bytes/block=" << properties.sharedMemPerBlock << '\n';
     }
+    if (device_count > 0)
+        cudaSetDevice(0);
 }
