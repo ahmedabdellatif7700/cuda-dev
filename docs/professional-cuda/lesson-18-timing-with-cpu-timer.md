@@ -12,6 +12,15 @@
 | Roadmap ID | 2.2.1 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run record in chapter summary; user profiling pending where applicable |
 
+## Core idea
+
+An elapsed interval is meaningful only when its start, completion boundary, and included work are defined.
+
+**Code or evidence:** [vector_add.cpp](../../src/vector_add.cpp). Timing only host submission differs from timing completed GPU work or allocation/copy/compute together. No source timer is added; this lesson is conceptual.
+
+**Original lesson commit:** `ab4621b`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Concept and code connection
 
 Read the timing introduction on p. 43 first. A CPU timer around only a launch often measures enqueue work, not GPU completion. A synchronized interval can measure completed work; including allocations/copies answers a different pipeline question. Events provide stream-ordered GPU intervals. We cover these definitions without adding timers, as requested. Kernel time from your ncu-ui capture is not total application latency; printed stage labels are not timestamps.

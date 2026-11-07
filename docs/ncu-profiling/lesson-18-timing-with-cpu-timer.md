@@ -3,6 +3,15 @@
 Chapter 2 → Timing Your Kernel → Timing with CPU Timer, printed pp. 43–46; roadmap 2.2.1.
 See [lesson notes](../professional-cuda/lesson-18-timing-with-cpu-timer.md).
 
+## Core idea
+
+An elapsed interval is meaningful only when its start, completion boundary, and included work are defined.
+
+**Code or evidence:** [vector_add.cpp](../../src/vector_add.cpp). Timing only host submission differs from timing completed GPU work or allocation/copy/compute together. No source timer is added; this lesson is conceptual.
+
+**Original lesson commit:** `ab4621b`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Monitor and interpret
 
 Kernel(s): **Any selected kernel**.
