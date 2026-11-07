@@ -3,6 +3,15 @@
 Chapter 2 → Introducing the CUDA Programming Model → Launching a CUDA Kernel, printed pp. 36; roadmap 2.1.4.
 See [lesson notes](../professional-cuda/lesson-13-launching-a-cuda-kernel.md).
 
+## Core idea
+
+Launch geometry supplies enough logical threads, while bounds checks limit work to valid data.
+
+**Code or evidence:** [vector_add.cu](../../src/vector_add.cu). For 21 elements and 8 threads/block, ceil division launches 3 blocks; 3 extra threads skip their array accesses.
+
+**Original lesson commit:** `de13c9e`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Monitor and interpret
 
 Kernel(s): **VectorAddScalar / AddMatrix1D**.

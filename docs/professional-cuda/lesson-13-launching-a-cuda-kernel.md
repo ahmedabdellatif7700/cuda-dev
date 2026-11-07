@@ -12,6 +12,15 @@
 | Roadmap ID | 2.1.4 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run record in chapter summary; user profiling pending where applicable |
 
+## Core idea
+
+Launch geometry supplies enough logical threads, while bounds checks limit work to valid data.
+
+**Code or evidence:** [vector_add.cu](../../src/vector_add.cu). For 21 elements and 8 threads/block, ceil division launches 3 blocks; 3 extra threads skip their array accesses.
+
+**Original lesson commit:** `de13c9e`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Concept and code connection
 
 The host syntax Kernel<<<grid, block>>>(arguments) submits device work. Launch is asynchronous with respect to the host; launch success does not establish completion. Use ceil division so partial final blocks exist, then bounds-check in the kernel. For 21 elements and 8 threads, launch 3 blocks and guard 3 extra threads. Legal block dimensions must also satisfy the total-thread limit. Tiny teaching blocks are not performance recommendations.
