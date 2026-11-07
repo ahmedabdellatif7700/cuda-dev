@@ -3,6 +3,15 @@
 Chapter 2 → Organizing Parallel Threads → Indexing Matrices with Blocks and Threads, printed pp. 49–52; roadmap 2.3.1.
 See [lesson notes](../professional-cuda/lesson-20-indexing-matrices.md).
 
+## Core idea
+
+Row-major storage turns a two-dimensional coordinate into a unique flat array location.
+
+**Code or evidence:** [matrix_add_2d.cu](../../src/matrix_add_2d.cu). At width 7, row 2 and column 3 map to index 17. Row and column bounds must both be satisfied before accessing that location.
+
+**Original lesson commit:** `f96534d`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Monitor and interpret
 
 Kernel(s): **AddMatrix2D**.
