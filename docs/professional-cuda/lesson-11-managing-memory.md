@@ -12,6 +12,15 @@
 | Roadmap ID | 2.1.2 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run record in chapter summary; user profiling pending where applicable |
 
+## Core idea
+
+Memory APIs operate on byte ranges whose ownership and lifetime must cover every GPU access.
+
+**Code or evidence:** [memory_roundtrip.cpp](../../exercises/chapter-02/memory_roundtrip.cpp). Four floats require 4 * sizeof(float) bytes. The round trip prints the copied data before cudaFree releases the allocation.
+
+**Original lesson commit:** `84e0596`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Concept and code connection
 
 Host std::vector storage and device allocations are distinct in this program. Sizes passed to cudaMalloc/cudaMemcpy are bytes, not element counts: count * sizeof(float). Copy direction names describe API ownership even on shared physical Orin DRAM. DeviceBuffer releases its allocation at scope exit. Run exercises/chapter-02/memory_roundtrip.cpp to print 1 2 3 4 after an explicit allocation/copy/free round trip. Empty input should bypass a zero-grid launch. Keep buffers valid until GPU use finishes. No forced allocation-failure or numerical comparison code is added.

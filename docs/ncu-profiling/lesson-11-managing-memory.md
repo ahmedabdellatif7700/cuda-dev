@@ -3,6 +3,15 @@
 Chapter 2 → Introducing the CUDA Programming Model → Managing Memory, printed pp. 26–29; roadmap 2.1.2.
 See [lesson notes](../professional-cuda/lesson-11-managing-memory.md).
 
+## Core idea
+
+Memory APIs operate on byte ranges whose ownership and lifetime must cover every GPU access.
+
+**Code or evidence:** [memory_roundtrip.cpp](../../exercises/chapter-02/memory_roundtrip.cpp). Four floats require 4 * sizeof(float) bytes. The round trip prints the copied data before cudaFree releases the allocation.
+
+**Original lesson commit:** `84e0596`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Monitor and interpret
 
 Kernel(s): **None: host-only round trip**.
