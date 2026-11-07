@@ -653,3 +653,17 @@ Completion discussion and decision to advance:
 Start with **1.1.1, Sequential and Parallel Programming (p. 3)** after the Chapter 1 and Parallel Computing introductions (pp. 1–2). Use the existing scalar vector-add path to identify sequential CPU work, independent output elements, and the costs of dispatch and data handling. Derive a small-input result by hand and predict when GPU overhead dominates. Confirm device/toolchain context and agree on the single-variable size experiment before implementation. The existing float4 code stays a baseline for its later memory/instruction lessons; its presence does not advance the book sequence.
 
 **Approval boundary:** this document proposes the complete path. Source code and build configuration remain unchanged until you approve it. After approval, implementation proceeds one subsection at a time, and kernel profiling remains yours in `ncu-ui`.
+
+## Chapter 1 coverage checkpoint — 2026-11-06
+
+Lessons 1–4 cover pp. 1–11; concise lessons 5–9 finish pp. 12–22, including all
+remaining sections, the six exercise questions/subparts, and the Appendix's Chapter 1
+reading-group orientation. See [chapter recap](lesson-09-chapter-01-summary.md).
+Current code demonstrates greeting, thread mapping, GPU addition, and CPU follow-up.
+`make clean build run` and `make ptx` succeeded. User profiling and discussion remain
+open where captures have not been supplied. No Chapter 2 implementation has started.
+
+The user has authorized proceeding without per-lesson approval and prefers concise
+coverage of introductory topics. Retain full topic coverage and simple code; spend
+greater depth on important CUDA programming and GPU-behavior lessons. Keep PTX
+annotations relevant and next to implementation, not invocation.

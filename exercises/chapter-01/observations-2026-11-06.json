@@ -1,0 +1,34 @@
+[
+  {
+    "case": "no_wait",
+    "compile_exit": 0,
+    "compiler_output": "",
+    "run_exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "case": "synchronize",
+    "compile_exit": 0,
+    "compiler_output": "",
+    "run_exit": 0,
+    "stdout": "Hello World from GPU thread 0!\nHello World from GPU thread 1!\nHello World from GPU thread 2!\nHello World from GPU thread 3!\nHello World from GPU thread 4!\nHello World from GPU thread 5!\nHello World from GPU thread 6!\nHello World from GPU thread 7!\nHello World from GPU thread 8!\nHello World from GPU thread 9!\n",
+    "stderr": ""
+  },
+  {
+    "case": "reset",
+    "compile_exit": 0,
+    "compiler_output": "",
+    "run_exit": 0,
+    "stdout": "Hello World from GPU thread 0!\nHello World from GPU thread 1!\nHello World from GPU thread 2!\nHello World from GPU thread 3!\nHello World from GPU thread 4!\nHello World from GPU thread 5!\nHello World from GPU thread 6!\nHello World from GPU thread 7!\nHello World from GPU thread 8!\nHello World from GPU thread 9!\n",
+    "stderr": ""
+  },
+  {
+    "case": "default_arch",
+    "compile_exit": 0,
+    "compiler_output": "",
+    "run_exit": 0,
+    "stdout": "Hello World from GPU thread 0!\nHello World from GPU thread 1!\nHello World from GPU thread 2!\nHello World from GPU thread 3!\nHello World from GPU thread 4!\nHello World from GPU thread 5!\nHello World from GPU thread 6!\nHello World from GPU thread 7!\nHello World from GPU thread 8!\nHello World from GPU thread 9!\n",
+    "stderr": ""
+  }
+]
