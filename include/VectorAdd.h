@@ -19,3 +19,6 @@ void VectorAddCyclic(const std::vector<float>& input_a, const std::vector<float>
                     std::vector<float>& output, int threads_per_block, int max_blocks);
 void LaunchVectorAddCyclic(const float* input_a, const float* input_b, float* output,
                           std::size_t element_count, int threads_per_block, int max_blocks);
+
+void VectorAddPairs(const std::vector<float>& a, const std::vector<float>& b, std::vector<float>& output, int threads);
+void LaunchVectorAddPairs(const float*, const float*, float*, std::size_t, int);

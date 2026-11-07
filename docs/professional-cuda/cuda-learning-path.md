@@ -667,3 +667,13 @@ The user has authorized proceeding without per-lesson approval and prefers conci
 coverage of introductory topics. Retain full topic coverage and simple code; spend
 greater depth on important CUDA programming and GPU-behavior lessons. Keep PTX
 annotations relevant and next to implementation, not invocation.
+
+## Chapter 2 coverage checkpoint — 2026-11-07
+
+Lessons 10–28 cover Chapter 2 in book order. See
+[Chapter 2 recap](lesson-28-chapter-02-summary.md) for exercises, observed device
+limits, and explicit adaptations. Main directly runs matrix mappings and pair/int
+variants; all Chapter 1 modules and its combined entry point are preserved.
+Automatic numerical checkers and in-program timers remain omitted by preference;
+user profiling and best-configuration rankings remain pending. Read the timing and
+verification topics conceptually rather than treating them as measured exercises.
