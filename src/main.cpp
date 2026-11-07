@@ -22,4 +22,8 @@ int main()
     std::cout << "1D grid / 1D blocks: ";
     for (float value : output) std::cout << value << ' ';
     std::cout << '\n';
+    MatrixAddRows(a, b, output, width, height, 4);
+    std::cout << "2D grid / 1D blocks: ";
+    for (float value : output) std::cout << value << ' ';
+    std::cout << '\n';
 }
