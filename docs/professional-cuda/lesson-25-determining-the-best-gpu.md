@@ -12,6 +12,15 @@
 | Roadmap ID | 2.4.2 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run record in chapter summary; user profiling pending where applicable |
 
+## Core idea
+
+The best device depends on workload requirements and measured behavior, not one advertised hardware number.
+
+**Code or evidence:** [device_info.cpp](../../src/device_info.cpp). Only one GPU is visible here. Selecting logical device 0 is a local policy; a genuine multi-device ranking remains unmeasured.
+
+**Original lesson commit:** `df2b629`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Concept and code connection
 
 A heuristic may rank devices by SMs, clocks, capacity or capability, but best depends on workload and required features. This system exposes one Orin, so choose logical device 0 rather than inventing a multi-GPU comparison. PrintDeviceInfo lists all visible devices before selection. Genuine selection/scaling benchmarks require additional devices and are pending hardware. No GPU purchases or remote execution are needed for this topic.

@@ -3,6 +3,15 @@
 Chapter 2 → Managing Devices → Determining the Best GPU, printed pp. 63; roadmap 2.4.2.
 See [lesson notes](../professional-cuda/lesson-25-determining-the-best-gpu.md).
 
+## Core idea
+
+The best device depends on workload requirements and measured behavior, not one advertised hardware number.
+
+**Code or evidence:** [device_info.cpp](../../src/device_info.cpp). Only one GPU is visible here. Selecting logical device 0 is a local policy; a genuine multi-device ranking remains unmeasured.
+
+**Original lesson commit:** `df2b629`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Monitor and interpret
 
 Kernel(s): **None: selection policy**.
