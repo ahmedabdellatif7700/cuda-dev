@@ -3,6 +3,15 @@
 Chapter 2 → Introducing the CUDA Programming Model → Writing Your Kernel, printed pp. 37–38; roadmap 2.1.5.
 See [lesson notes](../professional-cuda/lesson-14-writing-your-kernel.md).
 
+## Core idea
+
+A kernel describes one thread’s independent operation and must assign every valid output to an appropriate owner.
+
+**Code or evidence:** [vector_add.cu](../../src/vector_add.cu). The source addition becomes two PTX global loads, a float addition, and a store. The index and bounds check decide which element that operation owns.
+
+**Original lesson commit:** `960e567`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Monitor and interpret
 
 Kernel(s): **VectorAddScalar / VectorAddCyclic**.
