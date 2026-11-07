@@ -12,6 +12,15 @@
 | Roadmap ID | 1.2.2 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run completed; user profiling/discussion pending where applicable |
 
+## Core idea
+
+Choose CPU or GPU work placement according to useful parallelism, control flow, data size, and movement cost.
+
+**Code or evidence:** [combined_main.cpp](../../exercises/chapter-01/combined_main.cpp). The GPU performs independent additions; the CPU then sums the small returned array. This division demonstrates cooperation without proving a speedup.
+
+**Original lesson commit:** `b0df87b`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Concept
 
 CPU and GPU complement each other. Choose placement using useful parallelism,
