@@ -3,6 +3,15 @@
 Chapter 2 → Organizing Parallel Threads → Summing Matrices with a 2D Grid and 2D Blocks, printed pp. 53–56; roadmap 2.3.2.
 See [lesson notes](../professional-cuda/lesson-21-matrix-add-2d.md).
 
+## Core idea
+
+A 2D grid and 2D blocks distribute ownership independently along rows and columns.
+
+**Code or evidence:** [matrix_add_2d.cu](../../src/matrix_add_2d.cu). A 7-by-3 matrix with block (4,2) needs grid (2,2). It launches 32 threads for 21 valid outputs, so edge checks are essential.
+
+**Original lesson commit:** `62932e7`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Monitor and interpret
 
 Kernel(s): **AddMatrix2D**.
