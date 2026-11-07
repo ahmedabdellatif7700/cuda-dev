@@ -12,6 +12,15 @@
 | Roadmap ID | 2.4.4 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run record in chapter summary; user profiling pending where applicable |
 
+## Core idea
+
+Device selection establishes which logical CUDA device a host thread uses for subsequent operations.
+
+**Code or evidence:** [device_info.cpp](../../src/device_info.cpp). Select device 0 before allocation. Visibility masking can reorder logical IDs; a logical ID is not a permanent physical identifier.
+
+**Original lesson commit:** `af56de1`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Concept and code connection
 
 cudaSetDevice selects the current logical device for the host thread. CUDA_VISIBLE_DEVICES can mask/reorder visible devices, so logical index 0 is not a permanent physical identifier. Our helper selects device 0 only when at least one device is visible. The isolated error exercise tries device_count as an invalid ID. Select a device before allocating its buffers; memory ownership remains tied to the allocating context/device.

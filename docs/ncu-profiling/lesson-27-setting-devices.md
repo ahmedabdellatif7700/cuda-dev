@@ -3,6 +3,15 @@
 Chapter 2 → Managing Devices → Setting Devices at Runtime, printed pp. 64–65; roadmap 2.4.4.
 See [lesson notes](../professional-cuda/lesson-27-setting-devices.md).
 
+## Core idea
+
+Device selection establishes which logical CUDA device a host thread uses for subsequent operations.
+
+**Code or evidence:** [device_info.cpp](../../src/device_info.cpp). Select device 0 before allocation. Visibility masking can reorder logical IDs; a logical ID is not a permanent physical identifier.
+
+**Original lesson commit:** `af56de1`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Monitor and interpret
 
 Kernel(s): **None: device selection**.
