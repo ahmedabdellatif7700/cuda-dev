@@ -30,6 +30,12 @@ int main()
         ThreadMapping(indices, block_count, threads_per_block);
         VectorAdd(input_a, input_b, output, threads_per_block);
 
+        // CPU follow-up work on returned data; this is not a result check.
+        float total = 0.0f;
+        for (int index = 0; index < element_count; ++index)
+            total += output[index];
+        std::cout << "CPU: sum of returned values = " << total << '\n';
+
         // Print returned data by logical block/thread ownership.
         // Display order does not reveal GPU execution order or SM placement.
         std::cout << "CPU: print returned results\n\n";
