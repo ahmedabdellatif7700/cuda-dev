@@ -1,3 +1,4 @@
+#include "GpuGreeting.h"
 #include "ThreadMapping.h"
 #include "VectorAdd.h"
 
@@ -14,6 +15,9 @@ int main()
 
     try
     {
+        std::cout << "Hello World from CPU!\n";
+        GpuGreeting();
+
         // CPU: allocate host arrays and prepare the input values.
         std::cout << "CPU: prepare inputs\n";
         std::vector<float> indices(element_count);
