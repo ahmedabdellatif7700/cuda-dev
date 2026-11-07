@@ -12,6 +12,15 @@
 | Roadmap ID | 2.2.2 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run record in chapter summary; user profiling pending where applicable |
 
+## Core idea
+
+Profiler kernel duration measures a different scope from application wall time, and collection conditions affect interpretation.
+
+**Code or evidence:** [lesson-19-timing-with-nvprof.md](../../docs/ncu-profiling/lesson-19-timing-with-nvprof.md). Use ncu-ui instead of the historical nvprof workflow. Compare matched workloads/settings; do not call a kernel duration the full CPU/GPU pipeline cost.
+
+**Original lesson commit:** `e5bd970`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Concept and code connection
 
 nvprof is the book’s historical profiler. Use your ncu-ui workflow for kernel Duration and launch/resource metrics. Replay and collection can perturb caches and concurrency; collection wall time is not kernel time. Inspect arithmetic intensity: one float addition reads two floats and writes one, or 12 logical bytes per output. Actual cache/DRAM bytes differ. A compute-to-byte argument suggests questions, not proof of a bottleneck. No old nvprof command or numeric Tesla result is assumed to match Orin.
