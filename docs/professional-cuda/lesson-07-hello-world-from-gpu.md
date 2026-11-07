@@ -12,6 +12,15 @@
 | Roadmap ID | 1.3 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run completed; user profiling/discussion pending where applicable |
 
+## Core idea
+
+One kernel launch executes a function across many threads; explicit completion makes device output observable before host exit.
+
+**Code or evidence:** [gpu_greeting.cu](../../src/gpu_greeting.cu). Ten threads launch; only thread 5 passes the condition and prints. Synchronization waits; resetting the device would additionally destroy its resources.
+
+**Original lesson commit:** `3ded1e6`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Concept and code
 
 `__global__` marks a kernel. The host launches it with `<<<blocks, threads>>>`.
