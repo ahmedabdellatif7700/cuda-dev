@@ -15,6 +15,15 @@
 Read through the data-partition figures and stop before Computer Architecture
 on p. 6. Roadmap IDs are our navigation labels, not printed book numbering.
 
+## Core idea
+
+Data parallelism applies one operation to many data items; cyclic ownership lets a bounded set of threads cover a larger array.
+
+**Code or evidence:** [vector_add_cyclic.cu](../../src/vector_add_cyclic.cu). With four threads, thread 1 owns indices 1, 5, 9. The stride is the total launched thread count, not the block size alone.
+
+**Original lesson commit:** `ce01ba4`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Theory and GPU architecture
 
 **Data parallelism:** apply the same operation to independent data items. Both

@@ -4,6 +4,15 @@ Book: *Professional CUDA C Programming* (2014), Chapter 1 → Parallel Computing
 Parallelism (printed pp. 4–5). Roadmap ID: 1.1.2.
 See [lesson 2](../professional-cuda/lesson-02-parallelism.md) for theory and code.
 
+## Core idea
+
+Data parallelism applies one operation to many data items; cyclic ownership lets a bounded set of threads cover a larger array.
+
+**Code or evidence:** [vector_add_cyclic.cu](../../src/vector_add_cyclic.cu). With four threads, thread 1 owns indices 1, 5, 9. The stride is the total launched thread count, not the block size alone.
+
+**Original lesson commit:** `ce01ba4`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Question and baseline
 
 Does reusing threads through cyclic ownership change execution cost for the same
