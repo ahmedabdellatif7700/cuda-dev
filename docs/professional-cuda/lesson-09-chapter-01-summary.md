@@ -12,6 +12,15 @@
 | Roadmap ID | 1.5 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run completed; user profiling/discussion pending where applicable |
 
+## Core idea
+
+Chapter 1 connects parallel work, architecture, host/device roles, and the first reproducible CUDA program.
+
+**Code or evidence:** [README.md](../../exercises/chapter-01/README.md). Preserved greeting variants separate launch, completion, and teardown. Notes supply architecture/partition reasoning that does not require an invented kernel.
+
+**Original lesson commit:** `72f503e`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Chapter recap
 
 We covered sequential/dependent work, data/task parallelism, contiguous/cyclic
