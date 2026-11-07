@@ -3,6 +3,15 @@
 Chapter 2 → Organizing Parallel Threads → Summing Matrices with a 1D Grid and 1D Blocks, printed pp. 57; roadmap 2.3.3.
 See [lesson notes](../professional-cuda/lesson-22-matrix-add-1d.md).
 
+## Core idea
+
+A flat 1D mapping can process an entire matrix when the operation does not depend on row boundaries.
+
+**Code or evidence:** [matrix_add_1d.cu](../../src/matrix_add_1d.cu). The 21-element matrix with 8 threads/block needs 3 blocks. Flat addition needs no division into row and column inside the kernel.
+
+**Original lesson commit:** `88ef1a3`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Monitor and interpret
 
 Kernel(s): **AddMatrix1D**.
