@@ -15,6 +15,15 @@
 
 The roadmap ID is our navigation label, not a section number printed in the book.
 
+## Core idea
+
+Independent outputs can run concurrently; dependent operations must respect their order.
+
+**Code or evidence:** [vector_add.cu](../../src/vector_add.cu). Output 37 depends on A[37] and B[37], not output 36. Each thread can therefore own one addition.
+
+**Original lesson commit:** `089a885`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Theory and GPU architecture
 
 Each output `c[i] = a[i] + b[i]` depends only on input elements at index i.

@@ -4,6 +4,15 @@ Book: *Professional CUDA C Programming* (2014), Chapter 1 — Heterogeneous Para
 
 Companion to [lesson 1](../professional-cuda/lesson-01-sequential-and-parallel-programming.md). Kernel: `VectorAddScalar`.
 
+## Core idea
+
+Independent outputs can run concurrently; dependent operations must respect their order.
+
+**Code or evidence:** [vector_add.cu](../../src/vector_add.cu). Output 37 depends on A[37] and B[37], not output 36. Each thread can therefore own one addition.
+
+**Original lesson commit:** `089a885`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## 1. Start with a question
 
 For this lesson: **how does the amount of independent work change GPU usage?**
