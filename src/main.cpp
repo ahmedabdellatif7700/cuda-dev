@@ -1,9 +1,11 @@
+#include "DeviceInfo.h"
 #include "MatrixAdd.h"
 #include <iostream>
 #include <vector>
 
 int main()
 {
+    PrintDeviceInfo();
     const int width = 7;
     const int height = 3;
     const int count = width * height;
