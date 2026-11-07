@@ -3,6 +3,15 @@
 Chapter 2 → Introducing the CUDA Programming Model → Verifying Your Kernel, printed pp. 39; roadmap 2.1.6.
 See [lesson notes](../professional-cuda/lesson-15-verifying-your-kernel.md).
 
+## Core idea
+
+Successful launch/completion and fast execution do not prove numerical correctness.
+
+**Code or evidence:** [matrix_add_2d.cu](../../src/matrix_add_2d.cu). For a 7-by-3 array with A = 0..20 and B = 10, inspect outputs 10..30. There is no automated reference comparison by user preference.
+
+**Original lesson commit:** `f9cb9c8`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Monitor and interpret
 
 Kernel(s): **AddMatrix2D**.

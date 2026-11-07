@@ -12,6 +12,15 @@
 | Roadmap ID | 2.1.6 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run record in chapter summary; user profiling pending where applicable |
 
+## Core idea
+
+Successful launch/completion and fast execution do not prove numerical correctness.
+
+**Code or evidence:** [matrix_add_2d.cu](../../src/matrix_add_2d.cu). For a 7-by-3 array with A = 0..20 and B = 10, inspect outputs 10..30. There is no automated reference comparison by user preference.
+
+**Original lesson commit:** `f9cb9c8`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Concept and code connection
 
 Verification asks whether results match the intended algorithm, not whether a launch finished. Typical methods are a CPU reference, known outputs, boundaries and appropriate floating-point tolerances. Per your preference, the program prints outputs and does not implement automated comparisons. For the 7-by-3 matrix, A = 0..20 and B = 10 gives sums 10..30. Inspect rows and partial tiles visually; this does not certify all outputs for all inputs. An indexing error may return plausible wrong numbers with no CUDA error. Numerical proof and profiler measurements are different evidence.
