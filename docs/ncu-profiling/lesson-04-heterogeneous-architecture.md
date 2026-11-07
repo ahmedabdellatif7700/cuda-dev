@@ -4,6 +4,15 @@ Book: *Professional CUDA C Programming* (2014), Chapter 1 → Heterogeneous Comp
 → Heterogeneous Architecture (pp. 9–11), with the parent introduction on pp. 8–9.
 Roadmap ID: 1.2.1. See [lesson 4](../professional-cuda/lesson-04-heterogeneous-architecture.md).
 
+## Core idea
+
+Heterogeneous execution separates CPU coordination from GPU computation and requires an explicit data/completion contract.
+
+**Code or evidence:** [vector_add.cpp](../../src/vector_add.cpp). The CPU allocates/copies/submits; VectorAddScalar adds on the GPU; a completed result copy lets CPU code consume the returned array.
+
+**Original lesson commit:** `870a331`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## What question are we answering?
 
 Which parts of the program run on the CPU, which run on the GPU, and which facts

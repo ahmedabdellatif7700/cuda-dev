@@ -15,6 +15,15 @@
 
 Roadmap IDs are navigation labels rather than printed section numbers.
 
+## Core idea
+
+Heterogeneous execution separates CPU coordination from GPU computation and requires an explicit data/completion contract.
+
+**Code or evidence:** [vector_add.cpp](../../src/vector_add.cpp). The CPU allocates/copies/submits; VectorAddScalar adds on the GPU; a completed result copy lets CPU code consume the returned array.
+
+**Original lesson commit:** `870a331`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Theory and GPU architecture
 
 ### What makes computing heterogeneous?
