@@ -4,6 +4,15 @@ Book: *Professional CUDA C Programming* (2014), Chapter 1 → Parallel Computing
 Computer Architecture (printed pp. 6–8). Roadmap ID: 1.1.3.
 See [lesson 3](../professional-cuda/lesson-03-computer-architecture.md).
 
+## Core idea
+
+Logical CUDA threads, warps, blocks, and grids map onto physical execution resources; they are not physical core identifiers.
+
+**Code or evidence:** [thread_mapping.cu](../../src/thread_mapping.cu). Two blocks of 32 threads contain two warps and 64 logical threads. The returned indices identify output ownership, not SM placement.
+
+**Original lesson commit:** `a2d5aa2`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Question and capture
 
 How does the logical launch relate to the hardware's execution capacity?

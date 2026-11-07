@@ -13,6 +13,15 @@
 | Experiment | Write each thread's global index into an array |
 | Status | Implementation prepared; build/run record below; user profiling pending |
 
+## Core idea
+
+Logical CUDA threads, warps, blocks, and grids map onto physical execution resources; they are not physical core identifiers.
+
+**Code or evidence:** [thread_mapping.cu](../../src/thread_mapping.cu). Two blocks of 32 threads contain two warps and 64 logical threads. The returned indices identify output ownership, not SM placement.
+
+**Original lesson commit:** `a2d5aa2`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Theory and GPU architecture
 
 ### Instructions and data: Flynn's taxonomy
