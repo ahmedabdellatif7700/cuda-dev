@@ -12,6 +12,15 @@
 | Roadmap ID | 1.4 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run completed; user profiling/discussion pending where applicable |
 
+## Core idea
+
+Efficient CUDA requires understanding both thread organization and memory locality, not merely translating syntax.
+
+**Code or evidence:** [vector_add.cu](../../src/vector_add.cu). Adjacent thread indices read adjacent floats, demonstrating spatial locality. Single-pass addition has little reuse to justify shared-memory staging.
+
+**Original lesson commit:** `3b2a2e0`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Important ideas
 
 CUDA makes work distribution and memory placement visible. The essentials are
