@@ -27,3 +27,12 @@ Keep explicit architecture 87 for the normal repository build.
 The main application's sources retain scalar/cyclic addition, thread mapping,
 and the greeting wrapper. To revisit cyclic addition, call `VectorAddCyclic` with
 the same arrays and a positive grid cap; no lesson selector is introduced.
+
+## Revisit the Chapter 1 combined program
+
+`combined_main.cpp` preserves the greeting/mapping/addition/CPU-sum program:
+
+```bash
+nvcc -std=c++20 -arch=sm_87 -Iinclude exercises/chapter-01/combined_main.cpp src/gpu_greeting.cu src/thread_mapping.cpp src/thread_mapping.cu src/vector_add.cpp src/vector_add.cu src/vector_add_cyclic.cu src/vector_add_pairs.cu -o build/chapter1_combined
+build/chapter1_combined
+```
