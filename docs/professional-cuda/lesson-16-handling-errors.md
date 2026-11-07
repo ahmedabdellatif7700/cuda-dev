@@ -12,6 +12,15 @@
 | Roadmap ID | 2.1.7 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run record in chapter summary; user profiling pending where applicable |
 
+## Core idea
+
+API errors, invalid launches, execution faults, and wrong answers are different failure classes with different evidence.
+
+**Code or evidence:** [launch_errors.cu](../../exercises/chapter-02/launch_errors.cu). A zero-thread launch reports an argument error; a valid launch can complete successfully; an invalid device ID fails before useful GPU work.
+
+**Original lesson commit:** `5fbcb3f`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Concept and code connection
 
 Separate host API errors, launch-configuration errors, asynchronous execution faults, and numerical logic errors. Existing launch wrappers use cudaGetLastError; a completion boundary can reveal later execution faults. Simple host wrappers intentionally omit most status checks per your preference, so a zero process exit alone is weak evidence. The isolated launch_errors exercise prints the error for a zero-thread block, then successful completion of a legal launch, then an invalid device ID. It does not intentionally corrupt memory or poison the device context.

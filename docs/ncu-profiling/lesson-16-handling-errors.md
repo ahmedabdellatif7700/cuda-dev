@@ -3,6 +3,15 @@
 Chapter 2 → Introducing the CUDA Programming Model → Handling Errors, printed pp. 40; roadmap 2.1.7.
 See [lesson notes](../professional-cuda/lesson-16-handling-errors.md).
 
+## Core idea
+
+API errors, invalid launches, execution faults, and wrong answers are different failure classes with different evidence.
+
+**Code or evidence:** [launch_errors.cu](../../exercises/chapter-02/launch_errors.cu). A zero-thread launch reports an argument error; a valid launch can complete successfully; an invalid device ID fails before useful GPU work.
+
+**Original lesson commit:** `5fbcb3f`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Monitor and interpret
 
 Kernel(s): **EmptyKernel in standalone exercise**.
