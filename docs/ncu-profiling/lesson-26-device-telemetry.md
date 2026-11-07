@@ -3,6 +3,15 @@
 Chapter 2 → Managing Devices → Using nvidia-smi to Query GPU Information, printed pp. 63–64; roadmap 2.4.3.
 See [lesson notes](../professional-cuda/lesson-26-device-telemetry.md).
 
+## Core idea
+
+System telemetry supplies operating context; it is not the same measurement as per-kernel occupancy or throughput.
+
+**Code or evidence:** [device-telemetry-2026-11-07.txt](../../exercises/chapter-02/device-telemetry-2026-11-07.txt). A sampled idle GPU utilization value says nothing about the arithmetic efficiency of a particular kernel. Keep telemetry and capture conditions distinct.
+
+**Original lesson commit:** `9cd43f4`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Monitor and interpret
 
 Kernel(s): **None: host telemetry**.

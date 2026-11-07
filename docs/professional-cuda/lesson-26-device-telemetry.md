@@ -12,6 +12,15 @@
 | Roadmap ID | 2.4.3 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run record in chapter summary; user profiling pending where applicable |
 
+## Core idea
+
+System telemetry supplies operating context; it is not the same measurement as per-kernel occupancy or throughput.
+
+**Code or evidence:** [device-telemetry-2026-11-07.txt](../../exercises/chapter-02/device-telemetry-2026-11-07.txt). A sampled idle GPU utilization value says nothing about the arithmetic efficiency of a particular kernel. Keep telemetry and capture conditions distinct.
+
+**Original lesson commit:** `9cd43f4`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Concept and code connection
 
 The book uses nvidia-smi for inventory/utilization. Tool availability differs on Jetson. Record what nvidia-smi actually reports; use available tegrastats for system CPU/GPU/memory/thermal context. Do not assume support merely because a binary is on PATH. A sampled utilization percentage is not the same as per-kernel occupancy or throughput. Runtime properties remain the reliable source for launch limits.
