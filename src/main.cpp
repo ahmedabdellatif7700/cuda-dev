@@ -18,4 +18,8 @@ int main()
         std::cout << output[index] << ' ';
         if ((index + 1) % width == 0) std::cout << '\n';
     }
+    MatrixAdd1D(a, b, output, width, height, 8);
+    std::cout << "1D grid / 1D blocks: ";
+    for (float value : output) std::cout << value << ' ';
+    std::cout << '\n';
 }
