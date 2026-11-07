@@ -3,6 +3,15 @@
 Chapter 2 → Managing Devices → Using the Runtime API to Query GPU Information, printed pp. 60–62; roadmap 2.4.1.
 See [lesson notes](../professional-cuda/lesson-24-querying-device-information.md).
 
+## Core idea
+
+Query actual device properties to derive legal configurations instead of importing another GPU’s limits.
+
+**Code or evidence:** [device_info.cpp](../../src/device_info.cpp). The observed Orin allows 1024 total threads/block. Per-axis maxima do not mean that multiplying all maximum dimensions forms a legal block.
+
+**Original lesson commit:** `83eba28`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Monitor and interpret
 
 Kernel(s): **None: runtime property query**.

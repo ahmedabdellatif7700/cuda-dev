@@ -12,6 +12,15 @@
 | Roadmap ID | 2.4.1 — [roadmap](cuda-learning-path.md) |
 | Status | Topic covered; build/run record in chapter summary; user profiling pending where applicable |
 
+## Core idea
+
+Query actual device properties to derive legal configurations instead of importing another GPU’s limits.
+
+**Code or evidence:** [device_info.cpp](../../src/device_info.cpp). The observed Orin allows 1024 total threads/block. Per-axis maxima do not mean that multiplying all maximum dimensions forms a legal block.
+
+**Original lesson commit:** `83eba28`. This note explains that lesson;
+the current main may have advanced to a later experiment.
+
 ## Concept and code connection
 
 Read Managing Devices on p. 60 first. PrintDeviceInfo enumerates visible devices and reports properties: compute capability, SMs, warp size, memory, block/grid limits. Read each dimension and total threads/block independently: maximum x,y,z cannot all be multiplied into a legal block. Querying capacity is not measuring utilization. The observed Orin reports 8 SMs, CC 8.7, warp 32 and 1024 threads/block; see the summary for per-axis limits.
