@@ -34,7 +34,8 @@ target_include_directories(main PRIVATE
 )
 
 
-target_link_libraries(main PRIVATE CUDA::cudart )
+
+target_link_libraries(main PRIVATE CUDA::cudart CUDA::cublas)
 
 set_target_properties(main PROPERTIES
     CUDA_SEPARABLE_COMPILATION ON
@@ -86,8 +87,6 @@ foreach(SOURCE IN LISTS SOURCES)
 
         COMMAND "${CMAKE_CUDA_COMPILER}"
             --ptx
-            -rdc=true
-            -rdc=true
             -rdc=true
             -std=c++20
             -arch=sm_${CUDA_ARCH}
