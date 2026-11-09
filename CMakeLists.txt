@@ -85,6 +85,7 @@ foreach(SOURCE IN LISTS SOURCES)
 
         COMMAND "${CMAKE_CUDA_COMPILER}"
             --ptx
+            -rdc=true
             -std=c++20
             -arch=sm_${CUDA_ARCH}
             "-I${CMAKE_CURRENT_SOURCE_DIR}/include"
