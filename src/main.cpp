@@ -1,11 +1,11 @@
-#include "InterleavedReduce.h"
+#include "CopyGlobal.h"
 #include <iostream>
 #include <vector>
 int main()
 {
-    std::vector<float> output(1);
-    InterleavedReduce(output);
-    std::cout << "InterleavedReduce: ";
+    std::vector<float> output(1024);
+    CopyGlobal(output);
+    std::cout << "CopyGlobal: ";
     for (int index = 0; index < 8 && index < int(output.size()); ++index)
         std::cout << output[index] << ' ';
     std::cout << '\n';
