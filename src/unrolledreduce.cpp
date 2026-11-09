@@ -1,13 +1,13 @@
 #include "CudaSupport.h"
-#include "NeighborReduce.h"
+#include "UnrolledReduce.h"
 #include <vector>
 
-void NeighborReduce(std::vector<float>& output)
+void UnrolledReduce(std::vector<float>& output)
 {
     const int count = 256;
     std::vector<float> input(count, 1.0f);
     DeviceBuffer device_input(count), device_output(output.size());
     CheckCuda(cudaMemcpy(device_input.data(), input.data(), count * sizeof(float), cudaMemcpyHostToDevice), "Copy input");
-    LaunchNeighborReduce(device_input.data(), device_output.data(), count);
+    LaunchUnrolledReduce(device_input.data(), device_output.data(), count);
     CheckCuda(cudaMemcpy(output.data(), device_output.data(), output.size() * sizeof(float), cudaMemcpyDeviceToHost), "Copy output");
 }

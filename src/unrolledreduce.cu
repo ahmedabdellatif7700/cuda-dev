@@ -1,7 +1,7 @@
 #include "CudaSupport.h"
-#include "InterleavedReduce.h"
+#include "UnrolledReduce.h"
 
-__global__ void InterleavedReduceKernel(const float* input, float* output, int count)
+__global__ void UnrolledReduceKernel(const float* input, float* output, int count)
 {
     // Selected generated PTX; intervening setup/control instructions omitted.
     // ld.global.f32 %f29, [%rd5];  // Read global data.
@@ -11,6 +11,7 @@ __global__ void InterleavedReduceKernel(const float* input, float* output, int c
     const int lane = threadIdx.x;
     values[lane] = lane < count ? input[lane] : 0.0f;
     __syncthreads();
+    #pragma unroll
     for (int stride = 128; stride > 0; stride /= 2)
     {
         if (lane < stride) values[lane] += values[lane + stride];
@@ -19,8 +20,8 @@ __global__ void InterleavedReduceKernel(const float* input, float* output, int c
     if (lane == 0) output[0] = values[0];
 }
 
-void LaunchInterleavedReduce(const float* input, float* output, int count)
+void LaunchUnrolledReduce(const float* input, float* output, int count)
 {
-    InterleavedReduceKernel<<<1, 256>>>(input, output, count);
-    CheckCuda(cudaGetLastError(), "Launch InterleavedReduce");
+    UnrolledReduceKernel<<<1, 256>>>(input, output, count);
+    CheckCuda(cudaGetLastError(), "Launch UnrolledReduce");
 }
