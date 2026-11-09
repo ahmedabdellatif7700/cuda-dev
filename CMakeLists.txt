@@ -35,8 +35,8 @@ target_include_directories(main PRIVATE
 
 
 
-find_package(MPI REQUIRED COMPONENTS CXX)
-target_link_libraries(main PRIVATE CUDA::cudart MPI::MPI_CXX)
+
+target_link_libraries(main PRIVATE CUDA::cudart )
 
 set_target_properties(main PROPERTIES
     CUDA_SEPARABLE_COMPILATION ON
