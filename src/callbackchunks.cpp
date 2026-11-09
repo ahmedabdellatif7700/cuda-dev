@@ -1,8 +1,9 @@
 #include "CudaSupport.h"
-#include "CpuGpuChunks.h"
+#include "CallbackChunks.h"
 #include <iostream>
+void CUDART_CB ReportCompletion(void*) { std::cout << "Host callback: stream completed its kernel\n"; }
 
-void CpuGpuChunks(std::vector<float>& output)
+void CallbackChunks(std::vector<float>& output)
 {
     const int count = 1024;
     const int chunk_size = 256;
@@ -26,11 +27,12 @@ void CpuGpuChunks(std::vector<float>& output)
     {
         const int offset = chunk * chunk_size;
         CheckCuda(cudaMemcpyAsync(device_input + offset, host_input + offset, chunk_size * sizeof(float), cudaMemcpyHostToDevice, streams[chunk]), "Async input");
-        LaunchCpuGpuChunks(device_input + offset, device_output + offset, chunk_size, streams[chunk]);
+        LaunchCallbackChunks(device_input + offset, device_output + offset, chunk_size, streams[chunk]);
         CheckCuda(cudaMemcpyAsync(host_output + offset, device_output + offset, chunk_size * sizeof(float), cudaMemcpyDeviceToHost, streams[chunk]), "Async output");
     }
     for (int chunk = 0; chunk < 4; ++chunk)
     {
+        CheckCuda(cudaLaunchHostFunc(streams[chunk], ReportCompletion, nullptr), "Host function");
         CheckCuda(cudaEventRecord(complete[chunk], streams[chunk]), "Record dependency");
     }
     // Independent CPU work; output is not read until all events complete.
