@@ -1,12 +1,13 @@
-#include "SynchronizedExchange.h"
+#include "IdeaBlocks.h"
+#include <iomanip>
 #include <iostream>
 #include <vector>
 int main()
 {
-    std::vector<float> output(256);
-    SynchronizedExchange(output);
-    std::cout << "SynchronizedExchange: ";
-    for (int index = 0; index < 8 && index < int(output.size()); ++index)
-        std::cout << output[index] << ' ';
+    std::vector<unsigned short> output(4);
+    IdeaBlocks(output);
+    std::cout << "IDEA encrypted words: ";
+    for (unsigned short word : output)
+        std::cout << std::hex << std::setw(4) << std::setfill('0') << word << ' ';
     std::cout << '\n';
 }
