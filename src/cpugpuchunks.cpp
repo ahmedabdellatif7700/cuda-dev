@@ -1,8 +1,8 @@
 #include "CudaSupport.h"
-#include "BreadthChunks.h"
+#include "CpuGpuChunks.h"
 #include <iostream>
 
-void BreadthChunks(std::vector<float>& output)
+void CpuGpuChunks(std::vector<float>& output)
 {
     const int count = 1024;
     const int chunk_size = 256;
@@ -26,15 +26,7 @@ void BreadthChunks(std::vector<float>& output)
     {
         const int offset = chunk * chunk_size;
         CheckCuda(cudaMemcpyAsync(device_input + offset, host_input + offset, chunk_size * sizeof(float), cudaMemcpyHostToDevice, streams[chunk]), "Async input");
-    }
-    for (int chunk = 0; chunk < 4; ++chunk)
-    {
-        const int offset = chunk * chunk_size;
-        LaunchBreadthChunks(device_input + offset, device_output + offset, chunk_size, streams[chunk]);
-    }
-    for (int chunk = 0; chunk < 4; ++chunk)
-    {
-        const int offset = chunk * chunk_size;
+        LaunchCpuGpuChunks(device_input + offset, device_output + offset, chunk_size, streams[chunk]);
         CheckCuda(cudaMemcpyAsync(host_output + offset, device_output + offset, chunk_size * sizeof(float), cudaMemcpyDeviceToHost, streams[chunk]), "Async output");
     }
     for (int chunk = 0; chunk < 4; ++chunk)
