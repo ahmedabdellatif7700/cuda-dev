@@ -677,3 +677,12 @@ variants; all Chapter 1 modules and its combined entry point are preserved.
 Automatic numerical checkers and in-program timers remain omitted by preference;
 user profiling and best-configuration rankings remain pending. Read the timing and
 verification topics conceptually rather than treating them as measured exercises.
+
+## Focused source snapshots — 2026-11-09
+
+The user has superseded the earlier preserve-all-source policy: each lesson commit
+contains only its relevant source modules. Previous implementations are preserved in
+Git history; Markdown is retained as reference. See [remaining chapter coverage](remaining-chapters-coverage.md)
+for every roadmap heading, runnable representative snapshots, and open experiments.
+Do not confuse theory/representative coverage with completed numerical, performance,
+external-hardware, or full end-of-chapter validation.
