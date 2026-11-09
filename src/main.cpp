@@ -1,11 +1,11 @@
-#include "ConcurrentChunks.h"
+#include "BreadthChunks.h"
 #include <iostream>
 #include <vector>
 int main()
 {
     std::vector<float> output(1024);
-    ConcurrentChunks(output);
-    std::cout << "ConcurrentChunks: ";
+    BreadthChunks(output);
+    std::cout << "BreadthChunks: ";
     for (int index = 0; index < 8 && index < int(output.size()); ++index)
         std::cout << output[index] << ' ';
     std::cout << '\n';
