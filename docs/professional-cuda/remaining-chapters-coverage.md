@@ -415,3 +415,11 @@ To study a prior lesson, use its commit from the table in a separate worktree or
 clean checkout. Do not restore every old source into the latest branch. Source links
 in historical Markdown may refer to that lesson snapshot. The current source stays
 small and focused. Kernel profiling is performed by the user, never automatically.
+
+## Final local diagnostic attempt — 2026-11-09
+
+The final IDEA snapshot printed `11fb ed2b 0198 6de5` for the documented input/key.
+This is an observed output, not a full encryption/decryption validation suite.
+`compute-sanitizer --tool memcheck ./bin/main` reported that GPU debugging features
+are disabled and emitted an error summary. The program still printed its result,
+but **memcheck validation is unavailable**, not passed. No profiler was run.

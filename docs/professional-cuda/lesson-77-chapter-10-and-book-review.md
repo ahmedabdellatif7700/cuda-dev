@@ -52,3 +52,11 @@ You personally capture actual kernels in ncu-ui. The
 No speedup or bottleneck is asserted without your captures. PTX is intermediate code;
 SASS is used only when final instruction selection matters. No next chapter is
 implicitly completed by this note.
+
+## Final local diagnostic attempt — 2026-11-09
+
+The final IDEA snapshot printed `11fb ed2b 0198 6de5` for the documented input/key.
+This is an observed output, not a full encryption/decryption validation suite.
+`compute-sanitizer --tool memcheck ./bin/main` reported that GPU debugging features
+are disabled and emitted an error summary. The program still printed its result,
+but **memcheck validation is unavailable**, not passed. No profiler was run.
