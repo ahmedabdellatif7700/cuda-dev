@@ -1,10 +1,10 @@
-#include "FourierImpulse.h"
+#include "RandomUniform.h"
 #include <iostream>
 #include <vector>
 int main()
 {
     std::vector<float> output(8);
-    FourierImpulse(output);
+    RandomUniform(output);
     for (float value : output) std::cout << value << ' ';
     std::cout << '\n';
 }
