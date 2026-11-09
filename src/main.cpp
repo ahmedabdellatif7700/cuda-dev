@@ -1,9 +1,10 @@
+#include "BlasProduct.h"
 #include <iostream>
+#include <vector>
 int main()
 {
-#ifdef _OPENACC
-    std::cout << "OpenACC version: " << _OPENACC << '\n';
-#else
-    std::cout << "Normal C++ build: OpenACC directives are not enabled.\n";
-#endif
+    std::vector<float> output(4);
+    BlasProduct(output);
+    for (float value : output) std::cout << value << ' ';
+    std::cout << '\n';
 }
