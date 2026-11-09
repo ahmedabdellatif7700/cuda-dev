@@ -1,5 +1,8 @@
 # Complete CUDA learning roadmap — Professional CUDA C Programming
 
+For concise review, use the [10-unit crash course](README.md). This document is
+the detailed reading inventory, not a requirement to study 77 separate lessons.
+
 **Status: proposed; awaiting roadmap approval. No source or build changes are authorized by this document.**
 
 Reference: John Cheng, Max Grossman, and Ty McKercher, *Professional CUDA C Programming* (2014), supplied PDF in `books/` (527 PDF pages). All reading locations below use **printed book pages**; printed page 1 is PDF page 29 (one-based). Target: **Jetson Orin Nano 8GB, compute capability 8.7**. Prepared 2026-11-01.
@@ -20,7 +23,7 @@ The PDF is reference material. Its commands, installation instructions, download
 | `src/vector_add.cu` | Checked host runner, deterministic data, device buffers, CUDA-event timing, full CPU comparison. Current timing is one launch with no warmup. |
 | `src/vector_add_vectorized.cu` | float4 kernel and scalar tail; existing alignment and tail behavior provide useful later memory lessons. |
 | `include/CudaSupport.h` | Checked runtime calls and float-specific noncopyable allocation owner; future types need appropriate ownership rather than assuming this is generic. |
-| `docs/professional-cuda/vector-add-profiling.md` | Prior screenshot interpretations; useful evidence, but not a substitute for reproducible raw reports or proof that a book subsection is complete. |
+| `docs/ncu-profiling/vector-add-capture-notes.md` | Prior screenshot interpretations; useful evidence, but not a substitute for reproducible raw reports or proof that a book subsection is complete. |
 | Execution host | aarch64, `nvcc` discoverable under `/usr/local/cuda-13.2/bin`, GPU device nodes present. Toolkit/runtime/device compatibility and actual properties remain to be recorded by the first approved lesson. No build or benchmark was run for this documentation task. |
 
 Pre-existing worktree changes and unrelated files are left untouched. This task changes only this roadmap. No compiler flags, dependencies, tools, or power settings have been changed.
@@ -658,7 +661,7 @@ Start with **1.1.1, Sequential and Parallel Programming (p. 3)** after the Chapt
 
 Lessons 1–4 cover pp. 1–11; concise lessons 5–9 finish pp. 12–22, including all
 remaining sections, the six exercise questions/subparts, and the Appendix's Chapter 1
-reading-group orientation. See [chapter recap](lesson-09-chapter-01-summary.md).
+reading-group orientation. See [chapter recap](chapter-01-foundations.md).
 Current code demonstrates greeting, thread mapping, GPU addition, and CPU follow-up.
 `make clean build run` and `make ptx` succeeded. User profiling and discussion remain
 open where captures have not been supplied. No Chapter 2 implementation has started.
@@ -671,7 +674,7 @@ annotations relevant and next to implementation, not invocation.
 ## Chapter 2 coverage checkpoint — 2026-11-07
 
 Lessons 10–28 cover Chapter 2 in book order. See
-[Chapter 2 recap](lesson-28-chapter-02-summary.md) for exercises, observed device
+[Chapter 2 recap](chapter-02-programming-model.md) for exercises, observed device
 limits, and explicit adaptations. Main directly runs matrix mappings and pair/int
 variants; all Chapter 1 modules and its combined entry point are preserved.
 Automatic numerical checkers and in-program timers remain omitted by preference;

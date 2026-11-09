@@ -1,6 +1,8 @@
-# Remaining chapters — coverage and execution record
+# Detailed coverage and historical snapshot record
 
-Each commit is a focused source snapshot. Markdown remains as reference history.
+Start with the [10-unit crash course](README.md). The lesson numbers below are
+historical Git snapshot IDs, not separate mandatory review lessons. Each commit
+preserves its source; the chapter guides consolidate the current review material.
 
 **This is representative teaching coverage, not a claim that every optimization, exercise, or profiling comparison is complete.**
 
