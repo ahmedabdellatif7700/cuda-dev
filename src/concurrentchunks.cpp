@@ -1,8 +1,8 @@
 #include "CudaSupport.h"
-#include "StreamChunks.h"
+#include "ConcurrentChunks.h"
 #include <iostream>
 
-void StreamChunks(std::vector<float>& output)
+void ConcurrentChunks(std::vector<float>& output)
 {
     const int count = 1024;
     const int chunk_size = 256;
@@ -26,7 +26,7 @@ void StreamChunks(std::vector<float>& output)
     {
         const int offset = chunk * chunk_size;
         CheckCuda(cudaMemcpyAsync(device_input + offset, host_input + offset, chunk_size * sizeof(float), cudaMemcpyHostToDevice, streams[chunk]), "Async input");
-        LaunchStreamChunks(device_input + offset, device_output + offset, chunk_size, streams[chunk]);
+        LaunchConcurrentChunks(device_input + offset, device_output + offset, chunk_size, streams[chunk]);
         CheckCuda(cudaMemcpyAsync(host_output + offset, device_output + offset, chunk_size * sizeof(float), cudaMemcpyDeviceToHost, streams[chunk]), "Async output");
     }
     for (int chunk = 0; chunk < 4; ++chunk)
