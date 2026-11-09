@@ -35,7 +35,7 @@ target_include_directories(main PRIVATE
 
 
 
-target_link_libraries(main PRIVATE CUDA::cudart CUDA::cublas)
+target_link_libraries(main PRIVATE CUDA::cudart )
 
 set_target_properties(main PROPERTIES
     CUDA_SEPARABLE_COMPILATION ON
