@@ -1,11 +1,11 @@
-#include "BankStride.h"
+#include "SharedReduce.h"
 #include <iostream>
 #include <vector>
 int main()
 {
-    std::vector<float> output(256);
-    BankStride(output);
-    std::cout << "BankStride: ";
+    std::vector<float> output(1);
+    SharedReduce(output);
+    std::cout << "SharedReduce: ";
     for (int index = 0; index < 8 && index < int(output.size()); ++index)
         std::cout << output[index] << ' ';
     std::cout << '\n';
