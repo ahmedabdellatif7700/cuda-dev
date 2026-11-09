@@ -1,11 +1,11 @@
-#include "PaddedTranspose.h"
+#include "ConstantStencil.h"
 #include <iostream>
 #include <vector>
 int main()
 {
-    std::vector<float> output(64);
-    PaddedTranspose(output);
-    std::cout << "PaddedTranspose: ";
+    std::vector<float> output(1024);
+    ConstantStencil(output);
+    std::cout << "ConstantStencil: ";
     for (int index = 0; index < 8 && index < int(output.size()); ++index)
         std::cout << output[index] << ' ';
     std::cout << '\n';
