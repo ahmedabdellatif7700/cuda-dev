@@ -33,6 +33,7 @@ target_include_directories(main PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
+
 target_link_libraries(main PRIVATE CUDA::cudart )
 
 set_target_properties(main PROPERTIES
@@ -85,6 +86,7 @@ foreach(SOURCE IN LISTS SOURCES)
 
         COMMAND "${CMAKE_CUDA_COMPILER}"
             --ptx
+            -rdc=true
             -rdc=true
             -rdc=true
             -std=c++20
