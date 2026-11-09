@@ -1,10 +1,10 @@
-#include "RandomUniform.h"
+#include "BlasProduct.h"
 #include <iostream>
 #include <vector>
 int main()
 {
-    std::vector<float> output(8);
-    RandomUniform(output);
+    std::vector<float> output(4);
+    BlasProduct(output);
     for (float value : output) std::cout << value << ' ';
     std::cout << '\n';
 }
