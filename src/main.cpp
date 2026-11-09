@@ -1,11 +1,11 @@
-#include "SharedReduce.h"
+#include "PaddedTranspose.h"
 #include <iostream>
 #include <vector>
 int main()
 {
-    std::vector<float> output(1);
-    SharedReduce(output);
-    std::cout << "SharedReduce: ";
+    std::vector<float> output(64);
+    PaddedTranspose(output);
+    std::cout << "PaddedTranspose: ";
     for (int index = 0; index < 8 && index < int(output.size()); ++index)
         std::cout << output[index] << ' ';
     std::cout << '\n';
